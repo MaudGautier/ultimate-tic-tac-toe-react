@@ -9,7 +9,7 @@ class Game extends React.Component {
 		this.state = {
 			playerTurn: "X",
 			players: ["X", "O"],
-			value: null,
+			bigBoard: null,
 		};
 	}
 
@@ -35,25 +35,51 @@ class Game extends React.Component {
 			bigBoard.push(smallBoardsInRow);
 		};
 		return bigBoard;
-
 	}
-	
+
+	startGame(board) {
+		var emptyBoard = this.initialiseBigBoard();
+		this.setState({bigBoard: emptyBoard});
+	}
+
 	renderBigBoard(board) {
-		return (<BigBoard 
+		if (this.state.bigBoard) {
+			return (<BigBoard 
 			smallboards={board} 
 			onClick={this.handleClick} 
 			/>);
-	}
+			
+	}}
+
+	// handleClick(boardRow, boardCol, cellRow, cellCol) {
+    //
+	//     const board = JSON.parse(JSON.stringify(this.state.bigboard));  // Deep copy for array of arrays
+    //
+    //
+	//
+    //
+	//     // Changer le player
+	//     // Mettre image dans la case - SI smallBoard pas deja gagne OU case pas deja selectionnee
+    //
+	//     this.setState({
+	//         // playerTurn: this.state.playerTurn === "X" ? "O" : "X",
+	//         value: i,
+	//
+	//     })
+	/* } */
 
 	render() {
-		var bigboard = this.initialiseBigBoard();
+		var emptyBoard = this.initialiseBigBoard();
 		return ( 
 			<div className="game">
 			<div className="bigboard">
-			{this.renderBigBoard(bigboard)}
+			{this.renderBigBoard(emptyBoard)}
 			</div>
 			<div className="game-info">
 			{"Next player: " + (this.state.playerTurn)}
+			<button onClick={() => this.startGame(emptyBoard)} type="button">
+			Start playing !
+			</button>
 			</div>
 			</div>
 		);
