@@ -30,7 +30,7 @@ class SmallBoard extends React.Component {
 					column={j} 
 					// onClick={() => this.handleClick(i,j)}
 					onClick={() => this.props.onClick()(i, j)}
-					value={this.state.cells[i][j]}
+					value={this.props.cells[i][j]}
 					/>);
 			}
 			smallBoard.push(<div className="cells-row" key={i}> {cellsInRow} </div>);

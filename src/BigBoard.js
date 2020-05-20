@@ -39,10 +39,10 @@ class BigBoard extends React.Component {
 	}
 
 	handleClick(boardRow, boardColumn, row, column) {
-		console.log("Clicked"+boardRow+boardColumn+row+column)
-	   /*  const smallboards = JSON.parse(JSON.stringify(this.state.smallboards)); */
-		// smallboards[boardRow][boardColumn][row][column] = "Z";
-		/* this.setState({smallboards: smallboards}); */
+		// console.log("Clicked"+boardRow+boardColumn+row+column)
+		const smallboards = JSON.parse(JSON.stringify(this.state.smallboards));
+		smallboards[boardRow][boardColumn][row][column] = "Z";
+		this.setState({smallboards: smallboards});
 	}
 
 	render() {
