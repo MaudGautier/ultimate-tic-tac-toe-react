@@ -93,11 +93,11 @@ class SmallBoard extends React.Component {
 				var cellCardPos = getCardinalPosition(i, j);
 				cellsInRow.push(<Cell key={boardCardPos+"/"+cellCardPos} cardinalPosition={cellCardPos} row={i} column={j} />);
 			}
-			smallBoard.push(<div className="cells-row"> {cellsInRow} </div>);
+			smallBoard.push(<div className="cells-row" key={i}> {cellsInRow} </div>);
 		}
 		return smallBoard;
-
 	}
+
 	render() {
 		return (<div> { this.displaySmallBoard(this.state.cardinalPosition) } </div>);
 	}
