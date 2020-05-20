@@ -69,13 +69,11 @@ class Game extends React.Component {
 	handleClick(boardRow, boardCol, cellRow, cellCol) {
 		// console.log("Clicked"+boardRow+boardCol+cellRow+cellCol);
 		const board = JSON.parse(JSON.stringify(this.state.bigBoard));  // Deep copy for array of arrays
-		board[boardRow][boardCol][cellRow][cellCol] = "A";
-		this.setState({bigBoard: board});
-
-		// Changer le player
-		// Mettre image dans la case - SI smallBoard pas deja gagne OU case pas deja selectionnee
-
-			// playerTurn: this.state.playerTurn === "X" ? "O" : "X",
+		board[boardRow][boardCol][cellRow][cellCol] = this.state.playerTurn;
+		this.setState({
+			bigBoard: board,
+			playerTurn: this.state.playerTurn === "X" ? "O" : "X",
+		});
 	}
 
 	render() {
