@@ -76,18 +76,20 @@ class SmallBoard extends React.Component {
 		super(props);
 		this.state = {
 			cells: props.cells,
+			cardinalPosition: props.cardinalPosition,
 			// smallBoardLocation: props.smallBoardLocation,
 		};
 	}
 
-	displaySmallBoard = () => {
+	displaySmallBoard = (boardCardPos) => {
 		let smallBoard = []
 		// Create rows
 		for (let i = 0; i < 3; i++) {
 			let cellsInRow = []
 			// Create cells in row (i.e. columns)
 			for (let j =0; j <3; j++) {
-				cellsInRow.push(<Cell row={i} column={j} />);
+				var cellCardPos = getCardinalPosition(i, j);
+				cellsInRow.push(<Cell key={boardCardPos+"/"+cellCardPos} cardinalPosition={cellCardPos} row={i} column={j} />);
 			}
 			smallBoard.push(<div className="cells-row"> {cellsInRow} </div>);
 		}
@@ -95,7 +97,7 @@ class SmallBoard extends React.Component {
 
 	}
 	render() {
-		return (<div> { this.displaySmallBoard() } </div>);
+		return (<div> { this.displaySmallBoard(this.state.cardinalPosition) } </div>);
 	}
 
 }
@@ -128,9 +130,6 @@ function Cell(props) {
 //         if (this.props.row == "1") { return ( <button className="cellN" > {this.state.value}</button> );
 //         } else { return ( <button className="cell"> {this.state.value}</button> ); }
 //     }
-//     [> renderCell(row, column) { <]
-//         // if (row === "1") {return (<button className="cellN" onClick={props.onClick})}
-//     [> } <]
 // }
 /*  */
 
