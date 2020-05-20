@@ -9,21 +9,48 @@ class Game extends React.Component {
 		this.state = {
 			playerTurn: "X",
 			players: ["X", "O"],
-			// var cells = Array(3).fill(Array(3).fill(null));
-			// var board = Array(3).fill(Array(3).fill(cells));
-			bigboard: Array(3).fill(Array(3).fill(Array(3).fill(Array(3).fill(null)))),
+			value: null,
 		};
+	}
+
+	initialiseBigBoard() {
+		let bigBoard = []
+		// Create rows of smallboards
+		for (let i = 0; i < 3; i++) {
+			let smallBoardsInRow = []
+			// Create smallboards in row (i.e. columns)
+			for (let j = 0; j < 3; j++) {
+				let smallBoard = []
+				// Create rows of cells
+				for (let k = 0; k < 3; k++) {
+					let cellsInRow = []
+					// Create cells in row (i.e. columns)
+					for (let l = 0; l < 3 ; l++) {
+						cellsInRow.push(null);
+					}
+					smallBoard.push(cellsInRow);
+				}
+				smallBoardsInRow.push(smallBoard);
+			}
+			bigBoard.push(smallBoardsInRow);
+		};
+		return bigBoard;
+
 	}
 	
 	renderBigBoard(board) {
-		return (<BigBoard smallboards={board} />);
+		return (<BigBoard 
+			smallboards={board} 
+			onClick={this.handleClick} 
+			/>);
 	}
 
 	render() {
+		var bigboard = this.initialiseBigBoard();
 		return ( 
 			<div className="game">
 			<div className="bigboard">
-			{this.renderBigBoard(this.state.bigboard)}
+			{this.renderBigBoard(bigboard)}
 			</div>
 			<div className="game-info">
 			{"Next player: " + (this.state.playerTurn)}
