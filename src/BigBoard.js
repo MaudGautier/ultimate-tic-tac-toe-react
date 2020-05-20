@@ -26,9 +26,8 @@ class BigBoard extends React.Component {
 					cardinalPosition={boardCardPos} 
 					row={i} 
 					column={j}
-					cells={this.state.smallboards[i][j]}
-					x
-					onClick={() => (k, l) => this.handleClick(i,j, k, l)}
+					cells={this.props.smallboards[i][j]}
+					onClick={() => (k, l) => this.props.onClick()(i,j, k, l)}
 					/>
 					</div>
 				);
@@ -36,13 +35,6 @@ class BigBoard extends React.Component {
 			bigBoard.push(<div className="board-row" key={i}> {boardsInRow} </div>);
 		}
 		return bigBoard;
-	}
-
-	handleClick(boardRow, boardColumn, row, column) {
-		// console.log("Clicked"+boardRow+boardColumn+row+column)
-		const smallboards = JSON.parse(JSON.stringify(this.state.smallboards));
-		smallboards[boardRow][boardColumn][row][column] = "Z";
-		this.setState({smallboards: smallboards});
 	}
 
 	render() {
