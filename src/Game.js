@@ -37,19 +37,34 @@ class Game extends React.Component {
 		return bigBoard;
 	}
 
-	startGame(board) {
+	startGame() {
 		var emptyBoard = this.initialiseBigBoard();
 		this.setState({bigBoard: emptyBoard});
 	}
 
-	renderBigBoard(board) {
+	renderBigBoard() {
 		if (this.state.bigBoard) {
-			return (<BigBoard 
-			smallboards={board} 
-			onClick={this.handleClick} 
-			/>);
-			
-	}}
+			return (
+				<div className="bigboard">
+				<BigBoard 
+				smallboards={this.state.bigBoard} 
+				onClick={this.handleClick} 
+				/>
+				</div>
+			);
+		} 
+	}
+
+	renderGameInfo() {
+		return (
+			<div className="game-info">
+			{"Next player: " + (this.state.playerTurn)}
+			<button onClick={() => this.startGame()} type="button">
+			Start playing !
+			</button>
+			</div>
+		);
+	}
 
 	// handleClick(boardRow, boardCol, cellRow, cellCol) {
     //
@@ -69,18 +84,10 @@ class Game extends React.Component {
 	/* } */
 
 	render() {
-		var emptyBoard = this.initialiseBigBoard();
 		return ( 
 			<div className="game">
-			<div className="bigboard">
-			{this.renderBigBoard(emptyBoard)}
-			</div>
-			<div className="game-info">
-			{"Next player: " + (this.state.playerTurn)}
-			<button onClick={() => this.startGame(emptyBoard)} type="button">
-			Start playing !
-			</button>
-			</div>
+			{this.renderBigBoard()}
+			{this.renderGameInfo()}
 			</div>
 		);
 	}
