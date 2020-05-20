@@ -58,7 +58,7 @@ class BigBoard extends React.Component {
 					cardinalPosition={boardCardPos} 
 					row={i} 
 					column={j}
-					cells={this.state.smallboards[i,j]}
+					cells={this.state.smallboards[i][j]}
 					/>
 					</div>
 				);
