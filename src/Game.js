@@ -25,6 +25,9 @@ class Game extends React.Component {
 			<div className="bigboard">
 			{this.renderBigBoard(this.state.bigboard)}
 			</div>
+			<div className="game-info">
+			{"Next player: " + (this.state.playerTurn)}
+			</div>
 			</div>
 		);
 	}
