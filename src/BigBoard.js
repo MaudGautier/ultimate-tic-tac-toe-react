@@ -7,7 +7,7 @@ class BigBoard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			smallboards: props.smallboards,
+			smallboards: props.smallboards, // Contains an array of 3X3 smallboards
 		};
 	}
 
@@ -31,7 +31,7 @@ class BigBoard extends React.Component {
 					</div>
 				);
 			}
-			bigBoard.push(<div className="smallboard-row" key={i}> {boardsInRow} </div>);
+			bigBoard.push(<div className="board-row" key={i}> {boardsInRow} </div>);
 		}
 		return bigBoard;
 	}

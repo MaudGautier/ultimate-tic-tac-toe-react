@@ -13,7 +13,7 @@ ol, ul {
   display: table;
 }
 
-.smallboards-row:after {
+.board-row:after {
   clear: both;
   content: "";
   display: table;

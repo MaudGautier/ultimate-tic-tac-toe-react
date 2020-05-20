@@ -7,9 +7,10 @@ class SmallBoard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			cells: props.cells,
+			cells: props.cells, // Contains an array of 3x3 cells 
 			cardinalPosition: props.cardinalPosition,
-			// smallBoardLocation: props.smallBoardLocation,
+			row: props.row,
+			column: props.column,
 		};
 	}
 
@@ -21,7 +22,13 @@ class SmallBoard extends React.Component {
 			// Create cells in row (i.e. columns)
 			for (let j =0; j <3; j++) {
 				var cellCardPos = getCardinalPosition(i, j);
-				cellsInRow.push(<Cell key={boardCardPos+"/"+cellCardPos} cardinalPosition={cellCardPos} row={i} column={j} />);
+				cellsInRow.push(
+					<Cell 
+					key={boardCardPos+"/"+cellCardPos} 
+					cardinalPosition={cellCardPos} 
+					row={i} 
+					column={j} 
+					/>);
 			}
 			smallBoard.push(<div className="cells-row" key={i}> {cellsInRow} </div>);
 		}
