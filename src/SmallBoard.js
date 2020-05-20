@@ -28,12 +28,21 @@ class SmallBoard extends React.Component {
 					cardinalPosition={cellCardPos} 
 					row={i} 
 					column={j} 
+					onClick={() => this.handleClick(i,j)}
+					value={this.state.cells[i][j]}
 					/>);
 			}
 			smallBoard.push(<div className="cells-row" key={i}> {cellsInRow} </div>);
 		}
 		return smallBoard;
 	}
+
+	handleClick(row, column) {
+		const cells = JSON.parse(JSON.stringify(this.state.cells)); // Deep copy for array of arrays
+		cells[row][column] = 'X';
+		this.setState({cells : cells});
+	}
+
 
 	render() {
 		return (<div> { this.displaySmallBoard(this.state.cardinalPosition) } </div>);

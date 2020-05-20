@@ -12,11 +12,20 @@ class Cell extends React.Component {
 		};
 	}
 
+
+
 	render() {
 		if (this.props.row === 0) { 
-			return ( <button className="cellN" > {this.state.value}</button> );
+			return ( <button className="cellN" > {this.props.value}</button> );
 		} else { 
-			return ( <button className="cell"> {this.state.value}</button> ); 
+			return ( 
+				<button 
+				className="cell" 
+				onClick={() => this.props.onClick()}
+				> 
+				{this.props.value}
+				</button> 
+			); 
 		}
 	}
 }
