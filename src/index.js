@@ -104,36 +104,23 @@ class SmallBoard extends React.Component {
 
 }
 
-function Cell(props) {
-	// [> return ( <]
-		// <button className="cell" row={props.row} onClick={props.onClick}>
-		// {props.value}
-		// </button>
-	// [> ); <]
+class Cell extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			cardinalPosition: props.cardinalPosition,
+			row: props.row,
+			column: props.column,
+			value: props.value,
+		};
+	}
 
-	if (props.row == "1") { return ( <button className="cellN" onClick={props.onClick}> {props.value}</button> );
-	} else { return ( <button className="cell" onClick={props.onClick}> {props.value}</button> ); }
-
-
+	render() {
+		if (this.props.row === 0) { return ( <button className="cellN" > {this.state.value}</button> );
+		} else { return ( <button className="cell"> {this.state.value}</button> ); }
+	}
 }
 
-
-// class Cell extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             row: null,
-//             column: null,
-//             value: null,
-//         };
-//     }
-//
-//     render() {
-//         if (this.props.row == "1") { return ( <button className="cellN" > {this.state.value}</button> );
-//         } else { return ( <button className="cell"> {this.state.value}</button> ); }
-//     }
-// }
-/*  */
 
 
 // ====================
