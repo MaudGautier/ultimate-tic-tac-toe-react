@@ -43,31 +43,33 @@ class BigBoard extends React.Component {
 		};
 	}
 
-	renderSmallBoard(cells) {
-		return (<SmallBoard cells={cells} />);
+	displayBigBoard = () => {
+		let bigBoard = []
+		// Create rows
+		for (let i = 0; i < 3; i++) {
+			let boardsInRow = []
+			// Create cells in row (i.e. columns)
+			for (let j =0; j <3; j++) {
+				var boardCardPos = getCardinalPosition(i, j);
+				boardsInRow.push(
+					<div className="smallboard" key={boardCardPos}>
+					<SmallBoard 
+					key={boardCardPos} 
+					cardinalPosition={boardCardPos} 
+					row={i} 
+					column={j}
+					cells={this.state.smallboards[i,j]}
+					/>
+					</div>
+				);
+			}
+			bigBoard.push(<div className="smallboard-row" key={i}> {boardsInRow} </div>);
+		}
+		return bigBoard;
 	}
 
 	render() {
-		return (
-			<div>
-			<div className="smallboard-row">
-			<div className="smallboard">{this.renderSmallBoard(this.state.smallboards[0,0])}</div>
-			<div className="smallboard">{this.renderSmallBoard(this.state.smallboards[0,1])}</div>
-			<div className="smallboard">{this.renderSmallBoard(this.state.smallboards[0,2])}</div>
-			</div>
-			<div className="smallboard-row">
-			<div className="smallboard">{this.renderSmallBoard(this.state.smallboards[1,0])}</div>
-			<div className="smallboard">{this.renderSmallBoard(this.state.smallboards[1,1])}</div>
-			<div className="smallboard">{this.renderSmallBoard(this.state.smallboards[1,2])}</div>
-			</div>
-			<div className="smallboard-row">
-			<div className="smallboard">{this.renderSmallBoard(this.state.smallboards[2,0])}</div>
-			<div className="smallboard">{this.renderSmallBoard(this.state.smallboards[2,1])}</div>
-			<div className="smallboard">{this.renderSmallBoard(this.state.smallboards[2,2])}</div>
-			</div>
-
-			</div>
-		);
+		return (<div> {this.displayBigBoard()} </div>);
 	}
 }
 
