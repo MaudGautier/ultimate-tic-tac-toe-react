@@ -41,7 +41,7 @@ ol, ul {
 
 
 .cellN {
-  background: #000;
+  background: #ddd;
   border: 1px solid #999;
   float: left;
   font-size: 24px;
@@ -56,12 +56,11 @@ ol, ul {
 }
 
 
-
-.cell:focus {
+.cell:focus, .cellN:focus {
   outline: none;
 }
 
-.cell:hover {
+.cell:hover, .cellN:hover {
 	background-color: silver;
 }
 
