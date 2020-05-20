@@ -80,52 +80,24 @@ class SmallBoard extends React.Component {
 		};
 	}
 
-	renderCell([row, column]) {
-		return (
-			<Cell row={row} column={column} />
-		);
+	displaySmallBoard = () => {
+		let smallBoard = []
+		// Create rows
+		for (let i = 0; i < 3; i++) {
+			let cellsInRow = []
+			// Create cells in row (i.e. columns)
+			for (let j =0; j <3; j++) {
+				cellsInRow.push(<Cell row={i} column={j} />);
+			}
+			smallBoard.push(<div className="cells-row"> {cellsInRow} </div>);
+		}
+		return smallBoard;
+
 	}
-
-   /*  createSmallBoard = () => { */
-	//     let smallBoardDisplay = []
-	//     // Create rows
-	//     for (let i = 0; i < 3; i++) {
-	//         let cellsInRow = []
-	//         // Create cells in row (i.e. columns)
-	//         for (let j =0; j <3; j++) {
-	//             cellsInRow.push(<Cell row={i} column={j} />);
-	//         }
-	//         smallBoardDisplay.push(<div className="cells-row"> {cellsInRow} </div>);
-	//     }
-	//     return smallBoardDisplay;
-    //
-	// }
-	// render() {
-	//     return (<div> { this.createSmallBoard() } </div>);
-	// }
-/*  */
-
 	render() {
-		return (
-			<div>
-			<div className="cells-row">
-			{this.renderCell([0, 0])}
-			{this.renderCell([0, 1])}
-			{this.renderCell([0, 2])}
-			</div>
-			<div className="cells-row">
-			{this.renderCell([1, 0])}
-			{this.renderCell([1, 1])}
-			{this.renderCell([1, 2])}
-			</div>
-			<div className="cells-row">
-			{this.renderCell([2, 0])}
-			{this.renderCell([2, 1])}
-			{this.renderCell([2, 2])}
-			</div>
-			</div>
-		);
+		return (<div> { this.displaySmallBoard() } </div>);
 	}
+
 }
 
 function Cell(props) {
