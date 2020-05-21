@@ -26,18 +26,6 @@ module.exports = {
 	},
 
 	getWinner: function(children) {
-   /*      const alignments = [ */
-		//     [ [0,0], [0,] ]//row1 [0, 1, 2],
-		//     [3, 4, 5],
-		//     [6, 7, 8],
-		//     [0, 3, 6],
-		//     [1, 4, 7],
-		//     [2, 5, 8],
-		//     [0, 4, 8],
-		//     [2, 4, 6],
-		// ];
-	  /*    */
-		
 		for (let i = 0; i < 3; i++) {
 			// Test rows
 			if (children[i][0] && children[i][0] === children[i][1] && children[i][0] === children[i][2]) {
@@ -58,21 +46,15 @@ module.exports = {
 			return children[0][2];
 		}
 
-		// // Test columns
-		// for (let i = 0; i < 3; i++) {
-		//     if (children[i][0] && children[i][0] === children[i][1] && children[i][0] === children[i][2]) {
-		//         return children[i][0];
-		//     }
-		// }
-/*  */
-		// for (let i = 0; i < lines.length; i++) {
-		//     const [a, b, c] = lines[i];
-		//     console.log(lines[i]);
-		//     if (children[a] && children[a] === children[b] && children[a] === children[c]) {
-		//         return children[a];
-		//     }
-		/* } */
-		return null;
+		// Return null (i.e. no winner) if at least one child not full
+		for (let i = 0; i < 3; i++) {
+			for (let j = 0; j < 3; j++) {
+				if (!children[i][j]) {return null;}
+			}
+		}
+
+		// Tie in other case (i.e. no alignment and everything full)
+		return "tie";
 	}
 
 
