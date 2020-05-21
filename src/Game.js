@@ -14,6 +14,7 @@ class Game extends React.Component {
 			history: [{
 				bigBoard: null,
 				boardsWinners: null, // Array of 3x3 winner values (each smallBoard)
+				move: [null, null, null, null],
 			}],
 		};
 	}
@@ -100,17 +101,29 @@ class Game extends React.Component {
 		// Deep copy bigBoard
 		const history = this.state.history;
 		const current = history[history.length - 1];
+		// const previous = history[history.length - 2];
 		const board = JSON.parse(JSON.stringify(current.bigBoard)); 
 		const smallBoard = board[boardRow][boardCol]
 
 		// Return early if game already won
 		if (this.state.gameWinner) { return; }
 
-		// Return early if move invalid
+		// Return early if smallBoard won OR if cell not empty
 		if (current.boardsWinners[boardRow][boardCol] || 
 			smallBoard[cellRow][cellCol]) { return; }
 
-		// Change player turn
+		// Return early if selected board does not correspond to previous move
+		// /!\ EXCEPTION: if the smallBoard is won (X, O or tie)
+		if (history.length > 1) {
+			if (!current.boardsWinners[current.move[2]][current.move[3]]) {
+				if (boardRow !== current.move[2] || boardCol !== current.move[3]) {
+					return;
+				}
+			}
+		}
+
+
+		// Put mark on selected cell
 		board[boardRow][boardCol][cellRow][cellCol] = this.state.playerTurn;
 
 		// Determine if smallboard won
@@ -126,6 +139,7 @@ class Game extends React.Component {
 			history: history.concat([{
 				bigBoard: board,
 				boardsWinners: boardsWinners,
+				move: [boardRow, boardCol, cellRow, cellCol],
 			}]),
 			playerTurn: this.state.playerTurn === "X" ? "O" : "X",
 			gameWinner: gameWinner,
