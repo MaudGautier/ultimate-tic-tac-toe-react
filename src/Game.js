@@ -10,10 +10,10 @@ class Game extends React.Component {
 		this.state = {
 			playerTurn: "X",
 			players: ["X", "O"],
-			boardsWinners: null, // Array of 3x3 winner values (each smallBoard)
 			gameWinner: null,
 			history: [{
-				bigBoard: null
+				bigBoard: null,
+				boardsWinners: null, // Array of 3x3 winner values (each smallBoard)
 			}],
 		};
 	}
@@ -62,8 +62,8 @@ class Game extends React.Component {
 		this.setState({
 			history: [{
 				bigBoard: emptyBoard,
+				boardsWinners: emptyWinners,
 			}],
-			boardsWinners: emptyWinners,
 		});
 	}
 
@@ -74,7 +74,7 @@ class Game extends React.Component {
 				<BigBoard 
 				smallboards={current.bigBoard} 
 				onClick={() => (boardRow, boardCol, cellRow, cellCol) => this.handleClick(boardRow, boardCol, cellRow, cellCol)}
-				boardsWinners= {this.state.boardsWinners}
+				boardsWinners= {current.boardsWinners}
 				/>
 				</div>
 			);
@@ -103,7 +103,7 @@ class Game extends React.Component {
 		if (this.state.gameWinner) { return; }
 
 		// Return early if move invalid
-		if (this.state.boardsWinners[boardRow][boardCol] || 
+		if (current.boardsWinners[boardRow][boardCol] || 
 			smallBoard[cellRow][cellCol]) { return; }
 
 		// Change player turn
@@ -111,7 +111,7 @@ class Game extends React.Component {
 
 		// Determine if smallboard won
 		var winner = getWinner(smallBoard);
-		const boardsWinners = JSON.parse(JSON.stringify(this.state.boardsWinners));
+		const boardsWinners = JSON.parse(JSON.stringify(current.boardsWinners));
 		boardsWinners[boardRow][boardCol] = winner;
 
 		// Determine if game won
@@ -121,9 +121,9 @@ class Game extends React.Component {
 		this.setState({
 			history: history.concat([{
 				bigBoard: board,
+				boardsWinners: boardsWinners,
 			}]),
 			playerTurn: this.state.playerTurn === "X" ? "O" : "X",
-			boardsWinners: boardsWinners,
 			gameWinner: gameWinner,
 		});
 
