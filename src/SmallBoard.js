@@ -11,6 +11,7 @@ class SmallBoard extends React.Component {
 			cardinalPosition: props.cardinalPosition,
 			row: props.row,
 			column: props.column,
+			winner: props.winner,
 		};
 	}
 

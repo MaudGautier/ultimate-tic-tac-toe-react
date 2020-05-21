@@ -1,6 +1,7 @@
 // Game class
 import React from 'react';
 import BigBoard from './BigBoard';
+import {getWinner} from './functions';
 
 
 class Game extends React.Component {
@@ -10,6 +11,7 @@ class Game extends React.Component {
 			playerTurn: "X",
 			players: ["X", "O"],
 			bigBoard: null,
+			winners: null, // Array of 3x3 winner values (each smallBoard)
 		};
 	}
 
@@ -37,9 +39,27 @@ class Game extends React.Component {
 		return bigBoard;
 	}
 
+	initialiseWinners() {
+		let level1 = []
+		for (let i = 0; i < 3; i++) {
+			let level2 = []
+			for (let j = 0; j < 3; j++) {
+				level2.push(null);
+			}
+			level1.push(level2);
+		}
+		return level1;
+	}
+
+
+
 	startGame() {
 		var emptyBoard = this.initialiseBigBoard();
-		this.setState({bigBoard: emptyBoard});
+		var emptyWinners = this.initialiseWinners();
+		this.setState({
+			bigBoard: emptyBoard,
+			winners: emptyWinners,
+		});
 	}
 
 	renderBigBoard() {
@@ -49,6 +69,7 @@ class Game extends React.Component {
 				<BigBoard 
 				smallboards={this.state.bigBoard} 
 				onClick={() => (boardRow, boardCol, cellRow, cellCol) => this.handleClick(boardRow, boardCol, cellRow, cellCol)}
+				winners= {this.state.winners}
 				/>
 				</div>
 			);
@@ -67,13 +88,33 @@ class Game extends React.Component {
 	}
 
 	handleClick(boardRow, boardCol, cellRow, cellCol) {
-		// console.log("Clicked"+boardRow+boardCol+cellRow+cellCol);
 		const board = JSON.parse(JSON.stringify(this.state.bigBoard));  // Deep copy for array of arrays
+		const smallBoard = board[boardRow][boardCol]
+
+		// Return early if move invalid
+		if (this.state.winners[boardRow][boardCol] || smallBoard[cellRow][cellCol]) {
+			return;
+		}
+
+
+		// Change player turn
 		board[boardRow][boardCol][cellRow][cellCol] = this.state.playerTurn;
 		this.setState({
 			bigBoard: board,
 			playerTurn: this.state.playerTurn === "X" ? "O" : "X",
 		});
+
+
+		// Determine if board won
+		var winner = getWinner(smallBoard);
+		if (winner) {
+			const winners = JSON.parse(JSON.stringify(this.state.winners));
+			winners[boardRow][boardCol] = winner;
+			this.setState({
+				winners: winners,
+			})
+		}
+
 	}
 
 	render() {
