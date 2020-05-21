@@ -11,7 +11,7 @@ class Game extends React.Component {
 			playerTurn: "X",
 			players: ["X", "O"],
 			bigBoard: null,
-			winners: null, // Array of 3x3 winner values (each smallBoard)
+			boardsWinners: null, // Array of 3x3 winner values (each smallBoard)
 		};
 	}
 
@@ -58,7 +58,7 @@ class Game extends React.Component {
 		var emptyWinners = this.initialiseWinners();
 		this.setState({
 			bigBoard: emptyBoard,
-			winners: emptyWinners,
+			boardsWinners: emptyWinners,
 		});
 	}
 
@@ -69,7 +69,7 @@ class Game extends React.Component {
 				<BigBoard 
 				smallboards={this.state.bigBoard} 
 				onClick={() => (boardRow, boardCol, cellRow, cellCol) => this.handleClick(boardRow, boardCol, cellRow, cellCol)}
-				winners= {this.state.winners}
+				boardsWinners= {this.state.boardsWinners}
 				/>
 				</div>
 			);
@@ -91,8 +91,11 @@ class Game extends React.Component {
 		const board = JSON.parse(JSON.stringify(this.state.bigBoard));  // Deep copy for array of arrays
 		const smallBoard = board[boardRow][boardCol]
 
+		// Return early if game already won
+		if (this)
+
 		// Return early if move invalid
-		if (this.state.winners[boardRow][boardCol] || smallBoard[cellRow][cellCol]) {
+		if (this.state.boardsWinners[boardRow][boardCol] || smallBoard[cellRow][cellCol]) {
 			return;
 		}
 
@@ -105,15 +108,20 @@ class Game extends React.Component {
 		});
 
 
-		// Determine if board won
+		// Determine if smallboard won
 		var winner = getWinner(smallBoard);
 		if (winner) {
-			const winners = JSON.parse(JSON.stringify(this.state.winners));
-			winners[boardRow][boardCol] = winner;
+			const boardsWinners = JSON.parse(JSON.stringify(this.state.boardsWinners));
+			boardsWinners[boardRow][boardCol] = winner;
 			this.setState({
-				winners: winners,
+				boardsWinners: boardsWinners,
 			})
 		}
+
+		// Determine if game won
+		var gameWinner = getWinner(this.state.boardsWinners)
+
+
 
 	}
 

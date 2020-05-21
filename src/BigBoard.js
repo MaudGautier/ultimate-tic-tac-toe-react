@@ -8,7 +8,7 @@ class BigBoard extends React.Component {
 		super(props);
 		this.state = {
 			smallboards: props.smallboards, // Contains an array of 3X3 smallboards
-			winners: props.winners,
+			boardsWinners: props.boardsWinners,
 		};
 	}
 
@@ -29,7 +29,7 @@ class BigBoard extends React.Component {
 					column={j}
 					cells={this.props.smallboards[i][j]}
 					onClick={() => (k, l) => this.props.onClick()(i,j, k, l)}
-					winner={this.props.winners[i][j]}
+					winner={this.props.boardsWinners[i][j]}
 					/>
 					</div>
 				);
