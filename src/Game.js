@@ -82,9 +82,13 @@ class Game extends React.Component {
 	}
 
 	renderGameInfo() {
+		var status;
+		if (this.state.gameWinner) { status = "Winner: " + this.state.gameWinner; }
+		else { status = "Next player: " + (this.state.playerTurn) ; }
+
 		return (
 			<div className="game-info">
-			{"Next player: " + (this.state.playerTurn)}
+			{status}
 			<button onClick={() => this.startGame()} type="button">
 			Start playing !
 			</button>
