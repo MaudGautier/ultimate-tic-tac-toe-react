@@ -89,23 +89,19 @@ class Game extends React.Component {
 	}
 
 	handleClick(boardRow, boardCol, cellRow, cellCol) {
-		const board = JSON.parse(JSON.stringify(this.state.bigBoard));  // Deep copy for array of arrays
+		// Deep copy bigBoard
+		const board = JSON.parse(JSON.stringify(this.state.bigBoard)); 
 		const smallBoard = board[boardRow][boardCol]
 
 		// Return early if game already won
-		if (this.state.gameWinner) {
-			return;
-		}
+		if (this.state.gameWinner) { return; }
 
 		// Return early if move invalid
-		if (this.state.boardsWinners[boardRow][boardCol] || smallBoard[cellRow][cellCol]) {
-			return;
-		}
-
+		if (this.state.boardsWinners[boardRow][boardCol] || 
+			smallBoard[cellRow][cellCol]) { return; }
 
 		// Change player turn
 		board[boardRow][boardCol][cellRow][cellCol] = this.state.playerTurn;
-		
 
 		// Determine if smallboard won
 		var winner = getWinner(smallBoard);
