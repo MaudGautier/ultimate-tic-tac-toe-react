@@ -10,9 +10,11 @@ class Game extends React.Component {
 		this.state = {
 			playerTurn: "X",
 			players: ["X", "O"],
-			bigBoard: null,
 			boardsWinners: null, // Array of 3x3 winner values (each smallBoard)
 			gameWinner: null,
+			history: [{
+				bigBoard: null
+			}],
 		};
 	}
 
@@ -58,17 +60,19 @@ class Game extends React.Component {
 		var emptyBoard = this.initialiseBigBoard();
 		var emptyWinners = this.initialiseWinners();
 		this.setState({
-			bigBoard: emptyBoard,
+			history: [{
+				bigBoard: emptyBoard,
+			}],
 			boardsWinners: emptyWinners,
 		});
 	}
 
-	renderBigBoard() {
-		if (this.state.bigBoard) {
+	renderBigBoard(current) {
+		if (current.bigBoard) {
 			return (
 				<div className="bigboard">
 				<BigBoard 
-				smallboards={this.state.bigBoard} 
+				smallboards={current.bigBoard} 
 				onClick={() => (boardRow, boardCol, cellRow, cellCol) => this.handleClick(boardRow, boardCol, cellRow, cellCol)}
 				boardsWinners= {this.state.boardsWinners}
 				/>
@@ -90,7 +94,9 @@ class Game extends React.Component {
 
 	handleClick(boardRow, boardCol, cellRow, cellCol) {
 		// Deep copy bigBoard
-		const board = JSON.parse(JSON.stringify(this.state.bigBoard)); 
+		const history = this.state.history;
+		const current = history[history.length - 1];
+		const board = JSON.parse(JSON.stringify(current.bigBoard)); 
 		const smallBoard = board[boardRow][boardCol]
 
 		// Return early if game already won
@@ -113,7 +119,9 @@ class Game extends React.Component {
 
 		// Update board display
 		this.setState({
-			bigBoard: board,
+			history: history.concat([{
+				bigBoard: board,
+			}]),
 			playerTurn: this.state.playerTurn === "X" ? "O" : "X",
 			boardsWinners: boardsWinners,
 			gameWinner: gameWinner,
@@ -123,9 +131,11 @@ class Game extends React.Component {
 	}
 
 	render() {
+		const history = this.state.history;
+		const current = history[history.length - 1];
 		return ( 
 			<div className="game">
-			{this.renderBigBoard()}
+			{this.renderBigBoard(current)}
 			{this.renderGameInfo()}
 			</div>
 		);
