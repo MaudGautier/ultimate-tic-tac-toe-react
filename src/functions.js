@@ -1,7 +1,5 @@
 // Functions
 
-// import {array2D} from './functions';
-
 module.exports = {
 	getCardinalPosition: function(row, column) {
 		var cardinalPosition = "";
@@ -30,21 +28,29 @@ module.exports = {
 	getWinner: function(children) {
 		for (let i = 0; i < 3; i++) {
 			// Test rows
-			if (children[i][0] && children[i][0] === children[i][1] && children[i][0] === children[i][2]) {
+			if (children[i][0] 
+				&& children[i][0] === children[i][1] 
+				&& children[i][0] === children[i][2]) {
 				return children[i][0];
 			}
 			// Test columns
-			if (children[0][i] && children[0][i] === children[1][i] && children[0][i] === children[2][i]) {
+			if (children[0][i] 
+				&& children[0][i] === children[1][i] 
+				&& children[0][i] === children[2][i]) {
 				return children[0][i];
 			}
 		}
 
 		// Test diag 1
-		if (children[0][0] && children[0][0] === children[1][1] && children[0][0] === children[2][2]) {
+		if (children[0][0] 
+			&& children[0][0] === children[1][1] 
+			&& children[0][0] === children[2][2]) {
 			return children[0][0];
 		}
 		// Test diag 2
-		if (children[0][2] && children[0][2] === children[1][1] && children[0][2] === children[2][0]) {
+		if (children[0][2] 
+			&& children[0][2] === children[1][1] 
+			&& children[0][2] === children[2][0]) {
 			return children[0][2];
 		}
 
