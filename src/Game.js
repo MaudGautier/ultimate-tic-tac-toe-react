@@ -56,12 +56,12 @@ class Game extends React.Component {
 		return level1;
 	}
 
-	initialiseEnabledBoards() {
+	initialiseEnabledBoards(label) {
 		let level1 = []
 		for (let i = 0; i < 3; i++) {
 			let level2 = []
 			for (let j = 0; j < 3; j++) {
-				level2.push("disabled");
+				level2.push(label);
 			}
 			level1.push(level2);
 		}
@@ -73,7 +73,7 @@ class Game extends React.Component {
 	startGame() {
 		var emptyBoard = this.initialiseBigBoard(); // 3x3x3x3 null
 		var emptyWinners = this.initialiseWinners(); // 3x3 null
-		var emptyEnabledBoards = this.initialiseEnabledBoards(); // 3x3 disabled
+		var emptyEnabledBoards = this.initialiseEnabledBoards("enabled"); // 3x3 disabled
 		this.setState({
 			history: [{
 				bigBoard: emptyBoard,
@@ -154,7 +154,7 @@ class Game extends React.Component {
 		// remplacer par vide a chaque fois
 		// SI pas deja won => enable
 		// SI deja won => enable tous les non WON
-		var enabledBoards = this.initialiseEnabledBoards();
+		var enabledBoards = this.initialiseEnabledBoards("disabled");
 		if (!gameWinner) {
 			if (!boardsWinners[cellRow][cellCol]) {
 				enabledBoards[cellRow][cellCol] = "enabled";
