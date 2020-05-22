@@ -1,7 +1,7 @@
 // Game class
 import React from 'react';
 import BigBoard from './BigBoard';
-import {getWinner, array2D, array4D} from './functions';
+import {getCardinalPosition, getWinner, array2D, array4D} from './functions';
 
 
 class Game extends React.Component {
@@ -11,6 +11,7 @@ class Game extends React.Component {
 			playerTurn: "X",
 			players: ["X", "O"],
 			gameWinner: null,
+			stepNumber: 0,
 			history: [{
 				bigBoard: null, // 4D array of cell values
 				boardsWinners: null, // 2D array of winners of smallBoards
@@ -37,6 +38,7 @@ class Game extends React.Component {
 			gameWinner: null,
 			move: [null, null, null, null],
 			playerTurn: "X",
+			stepNumber: 0,
 		});
 	}
 
@@ -59,7 +61,16 @@ class Game extends React.Component {
 	}
 
 
-	renderGameInfo() {
+	jumpTo(step) {
+		this.setState({
+			stepNumber: step,
+			playerTurn: (step % 2) === 0 ? "X" : "O",
+		});
+	}
+
+
+	renderGameInfo(history) {
+		// Define status
 		var status;
 		if (this.state.gameWinner === "tie") { 
 			status = "It's a tie!" ;
@@ -71,12 +82,33 @@ class Game extends React.Component {
 			status = "Next player: " + (this.state.playerTurn) ; 
 		}
 
+		// Write time travel of moves (with buttons)
+		const movebuttons = history.map((stage, moveNo) => {
+			if (stage.move) {
+				var SBpos = getCardinalPosition(stage.move[0], stage.move[1]); 
+				var Cpos = getCardinalPosition(stage.move[2], stage.move[3]);
+			} else {
+				var SBpos = null; 
+				var Cpos = null;
+			}
+			var player = (moveNo % 2) === 1 ? "X" : "O";
+
+			const desc = 'Go to move #' + moveNo + ": " + 
+				player + " plays " + SBpos + "/" + Cpos;
+			return (
+				<li key={moveNo}>
+				<button onClick={() => this.jumpTo(moveNo)}>{desc}</button>
+				</li>
+			);
+		});
+
 		return (
 			<div className="game-info">
 			<div>{status}</div>
 			<button onClick={() => this.startGame()} type="button">
 			Start a new game
 			</button>
+			<ol>{movebuttons.slice(1,movebuttons.length)}</ol>
 			</div>
 		);
 	}
@@ -84,7 +116,7 @@ class Game extends React.Component {
 
 	handleClick(boardRow, boardCol, cellRow, cellCol) {
 		// Deep copy of history and boards
-		const history = this.state.history;
+		const history = this.state.history.slice(0, this.state.stepNumber + 1);
 		const current = history[history.length - 1];
 		const board = JSON.parse(JSON.stringify(current.bigBoard)); 
 		const smallBoard = board[boardRow][boardCol]
@@ -147,6 +179,7 @@ class Game extends React.Component {
 			}]),
 			playerTurn: this.state.playerTurn === "X" ? "O" : "X",
 			gameWinner: gameWinner,
+			stepNumber: history.length,
 		});
 
 	}
@@ -154,11 +187,11 @@ class Game extends React.Component {
 
 	render() {
 		const history = this.state.history;
-		const current = history[history.length - 1];
+		const current = history[this.state.stepNumber];
 		return ( 
 			<div className="game">
 			{this.renderBigBoard(current)}
-			{this.renderGameInfo()}
+			{this.renderGameInfo(history)}
 			</div>
 		);
 	}
