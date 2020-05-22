@@ -80,6 +80,9 @@ class Game extends React.Component {
 				boardsWinners: emptyWinners,
 				enabledBoards: emptyEnabledBoards,
 			}],
+			gameWinner: null,
+			move: [null, null, null, null],
+			playerTurn: "X",
 		});
 	}
 
@@ -107,7 +110,7 @@ class Game extends React.Component {
 			<div className="game-info">
 			{status}
 			<button onClick={() => this.startGame()} type="button">
-			Start playing !
+			Start a new game
 			</button>
 			</div>
 		);
