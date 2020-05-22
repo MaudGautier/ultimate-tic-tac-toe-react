@@ -85,6 +85,16 @@ ol, ul {
 	background-color: silver;
 }
 
+.cell.sizeBoard {
+  font-size: 72px;
+  line-height: 102px;
+  height: 102px;
+  margin-right: -3px;
+  margin-top: -3px;
+  width: 102px;
+  border-radius: 8px;
+}
+
 
 
 

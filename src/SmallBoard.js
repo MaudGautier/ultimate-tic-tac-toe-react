@@ -17,6 +17,9 @@ class SmallBoard extends React.Component {
 	}
 
 	displaySmallBoard = (boardCardPos) => {
+		if (this.props.winner === "X" || this.props.winner === "O") {
+			return <button className="cell sizeBoard"> {this.props.winner}</button>;
+		}
 		let smallBoard = []
 		// Create rows
 		for (let i = 0; i < 3; i++) {
