@@ -12,19 +12,22 @@ class Game extends React.Component {
 			players: ["X", "O"],
 			gameWinner: null,
 			history: [{
-				bigBoard: null,
-				boardsWinners: null, // Array of 3x3 winner values (each smallBoard)
+				bigBoard: null, // 4D array of cell values
+				boardsWinners: null, // 2D array of winners of smallBoards
 				move: [null, null, null, null],
-				enabledBoards: null,
+				enabledBoards: null, // 2D array of enabled smallBoards
 			}],
 		};
 	}
 
+	
 	startGame() {
+		// Initialise boards
 		var emptyWinners = array2D(3, null);
 		var emptyEnabledBoards = array2D(3, "enabled");
 		var emptyBoard = array4D(3, null);
 
+		// Modify state
 		this.setState({
 			history: [{
 				bigBoard: emptyBoard,
@@ -36,6 +39,7 @@ class Game extends React.Component {
 			playerTurn: "X",
 		});
 	}
+
 
 	renderBigBoard(current) {
 		var classBigBoard = "bigboard";
@@ -54,12 +58,18 @@ class Game extends React.Component {
 		} 
 	}
 
+
 	renderGameInfo() {
 		var status;
-		if (this.state.gameWinner === "tie") { status = "It's a tie!" ;}
-		else if (this.state.gameWinner) { status = "Winner: " + this.state.gameWinner; }
-		else if (!this.state.history[this.state.history.length - 1].bigBoard) { status = "Welcome to the ultimate tic-tac-toe game!"; }
-		else { status = "Next player: " + (this.state.playerTurn) ; }
+		if (this.state.gameWinner === "tie") { 
+			status = "It's a tie!" ;
+		} else if (this.state.gameWinner) { 
+			status = "Winner: " + this.state.gameWinner; 
+		} else if (!this.state.history[this.state.history.length - 1].bigBoard) { 
+			status = "Welcome to the ultimate tic-tac-toe game!"; 
+		} else { 
+			status = "Next player: " + (this.state.playerTurn) ; 
+		}
 
 		return (
 			<div className="game-info">
@@ -71,23 +81,24 @@ class Game extends React.Component {
 		);
 	}
 
+
 	handleClick(boardRow, boardCol, cellRow, cellCol) {
-		// Deep copy bigBoard
+		// Deep copy of history and boards
 		const history = this.state.history;
 		const current = history[history.length - 1];
-		// const previous = history[history.length - 2];
 		const board = JSON.parse(JSON.stringify(current.bigBoard)); 
 		const smallBoard = board[boardRow][boardCol]
 
-		// Return early if game already won
-		if (this.state.gameWinner) { return; }
 
-		// Return early if smallBoard won OR if cell not empty
-		if (current.boardsWinners[boardRow][boardCol] || 
-			smallBoard[cellRow][cellCol]) { return; }
-
-		// Return early if selected board does not correspond to previous move
-		// /!\ EXCEPTION: if the smallBoard is won (X, O or tie)
+		// ~~~~~~ INVALID MOVE ~~~~~~ //
+		// Return early if:
+		if (this.state.gameWinner  // game already won
+			|| current.boardsWinners[boardRow][boardCol] // smallboard already won
+			|| smallBoard[cellRow][cellCol]) { // cell already full
+			return;
+		}
+		// Or if smallBoard is not valid (based on previous move)
+		// unless if the expected smallBoard is already won
 		if (history.length > 1) {
 			if (!current.boardsWinners[current.move[2]][current.move[3]]) {
 				if (boardRow !== current.move[2] || boardCol !== current.move[3]) {
@@ -95,8 +106,11 @@ class Game extends React.Component {
 				}
 			}
 		}
+
+
+		// ~~~~~~ VALID MOVE ~~~~~~ //
 		
-		// Put mark on selected cell
+		// Put X or O in selected cell
 		board[boardRow][boardCol][cellRow][cellCol] = this.state.playerTurn;
 
 		// Determine if smallboard won
@@ -107,11 +121,7 @@ class Game extends React.Component {
 		// Determine if game won
 		var gameWinner = getWinner(boardsWinners)
 		
-		// Define next smallboard (when game not already won)
-		// const enabledBoards = JSON.parse(JSON.stringify(current.enabledBoards));
-		// remplacer par vide a chaque fois
-		// SI pas deja won => enable
-		// SI deja won => enable tous les non WON
+		// Define valid smallboards for next move (unless game already won)
 		var enabledBoards = array2D(3, "disabled");
 		if (!gameWinner) {
 			if (!boardsWinners[cellRow][cellCol]) {
@@ -127,8 +137,7 @@ class Game extends React.Component {
 			}
 		}
 
-
-		// Update board display
+		// Update state
 		this.setState({
 			history: history.concat([{
 				bigBoard: board,
@@ -140,8 +149,8 @@ class Game extends React.Component {
 			gameWinner: gameWinner,
 		});
 
-
 	}
+
 
 	render() {
 		const history = this.state.history;
@@ -153,7 +162,6 @@ class Game extends React.Component {
 			</div>
 		);
 	}
-
 }
 
 export default Game;
