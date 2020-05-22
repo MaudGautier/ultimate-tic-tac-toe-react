@@ -1,5 +1,7 @@
 // Functions
 
+// import {array2D} from './functions';
+
 module.exports = {
 	getCardinalPosition: function(row, column) {
 		var cardinalPosition = "";
@@ -55,10 +57,15 @@ module.exports = {
 
 		// Tie in other case (i.e. no alignment and everything full)
 		return "tie";
+	},
+
+	array2D: function(size, fillin) { 
+		return Array.from(Array(size), () => new Array(size).fill(fillin)); 
+	},
+
+	array4D: function(size, fillin) { 
+		return module.exports.array2D(size, module.exports.array2D(size, fillin));
 	}
-
-
-
-
+	
 }
 

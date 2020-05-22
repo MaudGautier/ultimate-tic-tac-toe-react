@@ -1,7 +1,7 @@
 // Game class
 import React from 'react';
 import BigBoard from './BigBoard';
-import {getWinner} from './functions';
+import {getWinner, array2D, array4D} from './functions';
 
 
 class Game extends React.Component {
@@ -20,60 +20,11 @@ class Game extends React.Component {
 		};
 	}
 
-	initialiseBigBoard() {
-		let bigBoard = []
-		// Create rows of smallboards
-		for (let i = 0; i < 3; i++) {
-			let smallBoardsInRow = []
-			// Create smallboards in row (i.e. columns)
-			for (let j = 0; j < 3; j++) {
-				let smallBoard = []
-				// Create rows of cells
-				for (let k = 0; k < 3; k++) {
-					let cellsInRow = []
-					// Create cells in row (i.e. columns)
-					for (let l = 0; l < 3 ; l++) {
-						cellsInRow.push(null);
-					}
-					smallBoard.push(cellsInRow);
-				}
-				smallBoardsInRow.push(smallBoard);
-			}
-			bigBoard.push(smallBoardsInRow);
-		};
-		return bigBoard;
-	}
-
-	initialiseWinners() {
-		let level1 = []
-		for (let i = 0; i < 3; i++) {
-			let level2 = []
-			for (let j = 0; j < 3; j++) {
-				level2.push(null);
-			}
-			level1.push(level2);
-		}
-		return level1;
-	}
-
-	initialiseEnabledBoards(label) {
-		let level1 = []
-		for (let i = 0; i < 3; i++) {
-			let level2 = []
-			for (let j = 0; j < 3; j++) {
-				level2.push(label);
-			}
-			level1.push(level2);
-		}
-		return level1;
-	}
-
-
-
 	startGame() {
-		var emptyBoard = this.initialiseBigBoard(); // 3x3x3x3 null
-		var emptyWinners = this.initialiseWinners(); // 3x3 null
-		var emptyEnabledBoards = this.initialiseEnabledBoards("enabled"); // 3x3 disabled
+		var emptyWinners = array2D(3, null);
+		var emptyEnabledBoards = array2D(3, "enabled");
+		var emptyBoard = array4D(3, null);
+
 		this.setState({
 			history: [{
 				bigBoard: emptyBoard,
@@ -161,7 +112,7 @@ class Game extends React.Component {
 		// remplacer par vide a chaque fois
 		// SI pas deja won => enable
 		// SI deja won => enable tous les non WON
-		var enabledBoards = this.initialiseEnabledBoards("disabled");
+		var enabledBoards = array2D(3, "disabled");
 		if (!gameWinner) {
 			if (!boardsWinners[cellRow][cellCol]) {
 				enabledBoards[cellRow][cellCol] = "enabled";
