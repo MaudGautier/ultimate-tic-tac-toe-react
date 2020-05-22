@@ -104,11 +104,12 @@ class Game extends React.Component {
 	renderGameInfo() {
 		var status;
 		if (this.state.gameWinner) { status = "Winner: " + this.state.gameWinner; }
+		else if (!this.state.history[this.state.history.length - 1].bigBoard) { status = "Welcome to the ultimate tic-tac-toe game!"; }
 		else { status = "Next player: " + (this.state.playerTurn) ; }
 
 		return (
 			<div className="game-info">
-			{status}
+			<div>{status}</div>
 			<button onClick={() => this.startGame()} type="button">
 			Start a new game
 			</button>
