@@ -66,7 +66,7 @@ ol, ul {
   outline: none;
 }
 
-.cell:hover {
+.cell.enabled:hover {
 	background-color: silver;
 }
 

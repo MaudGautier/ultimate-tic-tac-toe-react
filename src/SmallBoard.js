@@ -12,6 +12,7 @@ class SmallBoard extends React.Component {
 			row: props.row,
 			column: props.column,
 			winner: props.winner,
+			enabled: props.enabled,
 		};
 	}
 
@@ -29,9 +30,9 @@ class SmallBoard extends React.Component {
 					cardinalPosition={cellCardPos} 
 					row={i} 
 					column={j} 
-					// onClick={() => this.handleClick(i,j)}
 					onClick={() => this.props.onClick()(i, j)}
 					value={this.props.cells[i][j]}
+					enabled={this.props.enabled}
 					/>);
 			}
 			smallBoard.push(<div className="cells-row" key={i}> {cellsInRow} </div>);

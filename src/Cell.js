@@ -9,13 +9,15 @@ class Cell extends React.Component {
 			row: props.row,
 			column: props.column,
 			value: props.value,
+			enabled: props.enabled,
 		};
 	}
 
 	render() {
+		var classNameCell = "cell " + this.props.enabled;
 		return ( 
 			<button 
-			className="cell" 
+			className={classNameCell}
 			onClick={() => this.props.onClick()}
 			> 
 			{this.props.value}

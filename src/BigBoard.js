@@ -21,7 +21,7 @@ class BigBoard extends React.Component {
 			// Create cells in row (i.e. columns)
 			for (let j =0; j <3; j++) {
 				var boardCardPos = getCardinalPosition(i, j);
-				var classNameBoard = "smallboard" + " " + this.props.enabledBoards[i][j];
+				var classNameBoard = "smallboard " + this.props.enabledBoards[i][j];
 				boardsInRow.push(
 					<div className={classNameBoard} key={boardCardPos}>
 					<SmallBoard 
@@ -32,6 +32,7 @@ class BigBoard extends React.Component {
 					cells={this.props.smallboards[i][j]}
 					onClick={() => (k, l) => this.props.onClick()(i,j, k, l)}
 					winner={this.props.boardsWinners[i][j]}
+					enabled={this.props.enabledBoards[i][j]}
 					/>
 					</div>
 				);
