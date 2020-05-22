@@ -87,9 +87,11 @@ class Game extends React.Component {
 	}
 
 	renderBigBoard(current) {
+		var classBigBoard = "bigboard";
 		if (current.bigBoard) {
+			if (this.state.gameWinner) { classBigBoard += " disabled"; }
 			return (
-				<div className="bigboard">
+				<div className={classBigBoard}>
 				<BigBoard 
 				smallboards={current.bigBoard} 
 				onClick={() => (boardRow, boardCol, cellRow, cellCol) => this.handleClick(boardRow, boardCol, cellRow, cellCol)}
