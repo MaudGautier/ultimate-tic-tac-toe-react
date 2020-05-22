@@ -103,7 +103,8 @@ class Game extends React.Component {
 
 	renderGameInfo() {
 		var status;
-		if (this.state.gameWinner) { status = "Winner: " + this.state.gameWinner; }
+		if (this.state.gameWinner === "tie") { status = "It's a tie!" ;}
+		else if (this.state.gameWinner) { status = "Winner: " + this.state.gameWinner; }
 		else if (!this.state.history[this.state.history.length - 1].bigBoard) { status = "Welcome to the ultimate tic-tac-toe game!"; }
 		else { status = "Next player: " + (this.state.playerTurn) ; }
 
