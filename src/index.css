@@ -61,6 +61,21 @@ ol, ul {
   width: 34px;
 }
 
+.cell.N, .cell.NE, .cell.NW {
+	border-top: 1px solid transparent;
+}
+
+.cell.E, .cell.NE, .cell.SE {
+	border-right: 1px solid transparent;
+}
+
+.cell.S, .cell.SE, .cell.SW {
+	border-bottom: 1px solid transparent;
+}
+
+.cell.W, .cell.NW, .cell.SW {
+	border-left: 1px solid transparent;
+}
 
 .cell:focus {
   outline: none;

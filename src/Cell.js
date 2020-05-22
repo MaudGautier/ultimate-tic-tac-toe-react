@@ -14,7 +14,7 @@ class Cell extends React.Component {
 	}
 
 	render() {
-		var classNameCell = "cell " + this.props.enabled;
+		var classNameCell = "cell " + this.props.enabled + " " + this.props.cardinalPosition;
 		return ( 
 			<button 
 			className={classNameCell}
