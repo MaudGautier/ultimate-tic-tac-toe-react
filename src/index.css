@@ -1,3 +1,18 @@
+
+/***************************
+**          MAIN          **
+***************************/
+
+.game {
+  display: flex;
+  flex-direction: row;
+}
+
+.game-info {
+  margin-left: 20px;
+}
+
+
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
   margin: 20px;
@@ -6,6 +21,13 @@ body {
 ol, ul {
   padding-left: 30px;
 }
+
+
+
+
+/***************************
+**         CELLS          **
+***************************/
 
 .cells-row:after {
   clear: both;
@@ -48,6 +70,13 @@ ol, ul {
 	background-color: silver;
 }
 
+
+
+
+/***************************
+**         BOARDS         **
+***************************/
+
 .smallboard {
   background: #fff;
   float: left;
@@ -67,17 +96,4 @@ ol, ul {
 
 
 
-
-.kbd-navigation .cell:focus {
-  background: #ddd;
-}
-
-.game {
-  display: flex;
-  flex-direction: row;
-}
-
-.game-info {
-  margin-left: 20px;
-}
 
