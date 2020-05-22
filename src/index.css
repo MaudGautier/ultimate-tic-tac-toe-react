@@ -40,37 +40,31 @@ ol, ul {
 }
 
 
-.cellN {
-  background: #ddd;
-  border: 1px solid #999;
-  float: left;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
-  text-align: center;
-  width: 34px;
-}
-
-
-.cell:focus, .cellN:focus {
+.cell:focus {
   outline: none;
 }
 
-.cell:hover, .cellN:hover {
+.cell:hover {
 	background-color: silver;
 }
 
 .smallboard {
   background: #fff;
   float: left;
-  margin-right: -1px;
-  margin-top: -1px;
   padding: calc(4px + 0.5vw);
+  transition: border 0.5s;
+  border-radius: 8px;
+  margin: calc(2px + 0.25vw);
 }
+
+.smallboard.enabled {
+	border: 4px solid silver;
+}
+
+.smallboard.disabled {
+	border: 4px solid transparent;
+}
+
 
 
 

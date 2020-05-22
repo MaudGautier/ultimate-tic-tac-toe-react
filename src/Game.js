@@ -15,6 +15,7 @@ class Game extends React.Component {
 				bigBoard: null,
 				boardsWinners: null, // Array of 3x3 winner values (each smallBoard)
 				move: [null, null, null, null],
+				enabledBoards: null,
 			}],
 		};
 	}
@@ -55,15 +56,29 @@ class Game extends React.Component {
 		return level1;
 	}
 
+	initialiseEnabledBoards() {
+		let level1 = []
+		for (let i = 0; i < 3; i++) {
+			let level2 = []
+			for (let j = 0; j < 3; j++) {
+				level2.push("disabled");
+			}
+			level1.push(level2);
+		}
+		return level1;
+	}
+
 
 
 	startGame() {
-		var emptyBoard = this.initialiseBigBoard();
-		var emptyWinners = this.initialiseWinners();
+		var emptyBoard = this.initialiseBigBoard(); // 3x3x3x3 null
+		var emptyWinners = this.initialiseWinners(); // 3x3 null
+		var emptyEnabledBoards = this.initialiseEnabledBoards(); // 3x3 disabled
 		this.setState({
 			history: [{
 				bigBoard: emptyBoard,
 				boardsWinners: emptyWinners,
+				enabledBoards: emptyEnabledBoards,
 			}],
 		});
 	}
@@ -76,6 +91,7 @@ class Game extends React.Component {
 				smallboards={current.bigBoard} 
 				onClick={() => (boardRow, boardCol, cellRow, cellCol) => this.handleClick(boardRow, boardCol, cellRow, cellCol)}
 				boardsWinners= {current.boardsWinners}
+				enabledBoards={current.enabledBoards}
 				/>
 				</div>
 			);
@@ -121,8 +137,7 @@ class Game extends React.Component {
 				}
 			}
 		}
-
-
+		
 		// Put mark on selected cell
 		board[boardRow][boardCol][cellRow][cellCol] = this.state.playerTurn;
 
@@ -133,6 +148,27 @@ class Game extends React.Component {
 
 		// Determine if game won
 		var gameWinner = getWinner(boardsWinners)
+		
+		// Define next smallboard (when game not already won)
+		// const enabledBoards = JSON.parse(JSON.stringify(current.enabledBoards));
+		// remplacer par vide a chaque fois
+		// SI pas deja won => enable
+		// SI deja won => enable tous les non WON
+		var enabledBoards = this.initialiseEnabledBoards();
+		if (!gameWinner) {
+			if (!boardsWinners[cellRow][cellCol]) {
+				enabledBoards[cellRow][cellCol] = "enabled";
+			} else {
+				for (let i = 0; i < 3; i++) {
+					for (let j =0; j <3; j++) {
+						if (!boardsWinners[i][j]) {
+							enabledBoards[i][j] = "enabled";
+						}
+					}
+				}
+			}
+		}
+
 
 		// Update board display
 		this.setState({
@@ -140,6 +176,7 @@ class Game extends React.Component {
 				bigBoard: board,
 				boardsWinners: boardsWinners,
 				move: [boardRow, boardCol, cellRow, cellCol],
+				enabledBoards: enabledBoards,
 			}]),
 			playerTurn: this.state.playerTurn === "X" ? "O" : "X",
 			gameWinner: gameWinner,
