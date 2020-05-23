@@ -113,6 +113,43 @@ test('evaluate: score when bigBoard won', () => {
 		}
 	}
 	expect(evaluate(bigBoard, "X", "O")).toBe(10000);
+	expect(evaluate(bigBoard, "X", "O", 1)).toBe(10000);
 	expect(evaluate(bigBoard, "O", "X")).toBe(-10000);
+	expect(evaluate(bigBoard, "O", "X", 1)).toBe(-10000);
 })
+
+test('evaluate: score for a smallboard', () => {
+	var SB_3X = array2D(3, null);
+	for (let i = 0; i < 3 ; i++) { SB_3X[0][i] = "X"; }
+	
+	var SB_2X = array2D(3, null);
+	for (let i = 0; i < 2 ; i++) { SB_2X[0][i] = "X"; }
+	
+	var SB_1X = array2D(3, null);
+	for (let i = 0; i < 1 ; i++) { SB_1X[0][i] = "X"; }
+	
+	var SB_2X_O = array2D(3, null);
+	for (let i = 0; i < 2 ; i++) { SB_2X_O[i][i] = "X"; }
+	SB_2X_O[2][2] = "O";
+
+	// console.log(evaluate(SB_3X, "X", "O", -1));
+	// console.log(evaluate(SB_2X, "X", "O", -1));
+	// console.log(evaluate(SB_2X_O, "X", "O", -1));
+	// console.log(evaluate(SB_1X, "X", "O", -1));
+
+	expect(evaluate(SB_3X, "X", "O", -1)).toBeGreaterThan(100);
+	expect(evaluate(SB_2X, "X", "O", -1)).toBeGreaterThan(10);
+	expect(evaluate(SB_1X, "X", "O", -1)).toBeGreaterThan(0);
+	expect(evaluate(SB_3X, "X", "O", -1)).toBeGreaterThan(evaluate(SB_2X, "X", "O", -1));
+	expect(evaluate(SB_2X, "X", "O", -1)).toBeGreaterThan(evaluate(SB_1X, "X", "O", -1));
+
+	expect(evaluate(SB_2X_O, "X", "O", -1)).toBeLessThan(evaluate(SB_2X, "X", "O", -1));
+	expect(evaluate(SB_2X_O, "X", "O", -1)).toBeCloseTo(evaluate(SB_1X, "X", "O", -1), 1);
+
+	var SB_2X_O_middle = array2D(3, null); SB_2X_O_middle[0][0] = "X" ; SB_2X_O_middle[1][1] = "O" ; SB_2X_O_middle[2][2] = "X" ; 
+	expect(evaluate(SB_2X_O_middle, "X", "O", -1)).toBeLessThan(evaluate(SB_2X_O, "X", "O", -1));
+
+})
+
+
 
