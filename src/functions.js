@@ -143,8 +143,26 @@ function getValidMoves(board, last_move) {
 		}
 	}
 	return validMoves;
+}
+
+function evaluate(board, player, opponent) {
+	var score = 0;
+	// If bigBoard => count how many small boards won in alignement and add up score
+	if (Array.isArray(board[0][0])) {
+		// Detect smallBoards won
+		var wonSB = module.exports.array2D(3, null);
+		for (let i = 0; i < 3; i++) {
+			for (let j = 0; j < 3; j++) {
+				wonSB[i][j] = module.exports.getWinner(board[i][j]);
+			}
+		}
+		// Return score if bigBoard won
+		if (module.exports.getWinner(wonSB) === player) { return Math.pow(10, 4); }
+		else if (module.exports.getWinner(wonSB) === opponent) { return -Math.pow(10, 4); }
+		// Augment score for alignments
+	}
 
 }
 
-module.exports = {getCardinalPosition, getWinner, array2D, array3D, array4D, aiMove, getValidMoves};
+module.exports = {getCardinalPosition, getWinner, array2D, array3D, array4D, aiMove, getValidMoves, evaluate};
 

@@ -1,17 +1,17 @@
-import {sum, getWinner, getValidMoves, array2D, array3D, array4D} from './functions';
+import {sum, getWinner, getValidMoves, array2D, array3D, array4D, evaluate} from './functions';
 
-test('full smallBoard', () => {
+test('getValidMoves: full smallBoard', () => {
 	let smallBoard = array2D(3, "X");
 	expect(getValidMoves(smallBoard, [0,0,0,0]).toBeNull);
 });
 
-test('smallBoard with one position left', () => {
+test('getValidMoves: smallBoard with one position left', () => {
 	let smallBoard = array2D(3, "X");
 	smallBoard[0][0] = null;
 	expect(getValidMoves(smallBoard, [0,0,0,0])).toEqual([[0, 0, 0, 0]]);
 });
 
-test('empty smallBoard', () => {
+test('getValidMoves: empty smallBoard', () => {
 	let smallBoard = array2D(3, null);
 	let rowSB = 0;
 	let colSB = 0;
@@ -24,7 +24,7 @@ test('empty smallBoard', () => {
 	expect(getValidMoves(smallBoard, [rowSB, colSB, 2, 2])).toEqual(expected_output);
 });
 
-test('test out of boundaries', () => {
+test('getValidMoves: test out of boundaries', () => {
 	let smallBoard = array2D(3, null);
 	expect(getValidMoves(smallBoard, [-1, 1, 1, 1])).toThrow(RangeError);
 	expect(getValidMoves(smallBoard, [1, -1, 1, 1])).toThrow(RangeError);
@@ -36,7 +36,7 @@ test('test out of boundaries', () => {
 	expect(getValidMoves(smallBoard, [1, 1, 1, 3])).toThrow(RangeError);
 })
 
-test('bigBoard with smallBoard not won', () => {
+test('getValidMoves: bigBoard with smallBoard not won', () => {
 	let bigBoard = array4D(3, null);
 	let rowBigB = 2;
 	let colBigB = 1;
@@ -50,7 +50,7 @@ test('bigBoard with smallBoard not won', () => {
 	expect(getValidMoves(bigBoard, [rowBigB,colBigB,rowSB,colSB])).toEqual(expected_output);
 })
 
-test('bigBoard with smallBoard won', () => {
+test('getValidMoves: bigBoard with smallBoard won', () => {
 	let bigBoard = array4D(3, null);
 	let rowBigB = 2;
 	let colBigB = 1;
@@ -79,4 +79,16 @@ test('bigBoard with smallBoard won', () => {
 
 })
 
+// EVALUATE
+test('evaluate: score when bigBoard won', () => {
+
+	var bigBoard = array4D(3, null);
+	for (let i = 0; i < 3 ; i++) {
+		for (let j = 0; j < 3; j++) {
+			bigBoard[i][i][j][j] = "X";
+		}
+	}
+	expect(evaluate(bigBoard, "X", "O")).toBe(10000);
+	expect(evaluate(bigBoard, "O", "X")).toBe(-10000);
+})
 
