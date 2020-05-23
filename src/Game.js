@@ -119,12 +119,13 @@ class Game extends React.Component {
 
 		// Write time travel of moves (with buttons)
 		const movebuttons = history.map((stage, moveNo) => {
+			var SBpos, Cpos;
 			if (stage.move) {
-				var SBpos = getCardinalPosition(stage.move[0], stage.move[1]); 
-				var Cpos = getCardinalPosition(stage.move[2], stage.move[3]);
+				SBpos = getCardinalPosition(stage.move[0], stage.move[1]); 
+				Cpos = getCardinalPosition(stage.move[2], stage.move[3]);
 			} else {
-				var SBpos = null; 
-				var Cpos = null;
+				SBpos = null; 
+				Cpos = null;
 			}
 			var player = (moveNo % 2) === 1 ? "X" : "O";
 

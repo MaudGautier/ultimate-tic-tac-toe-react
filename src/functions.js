@@ -229,7 +229,7 @@ function negamax(board, last_move, depth, player, opponent) {
 	var bestScore, bestMove;
 
 	// If terminal node (i.e. no move possible) or reached AI level => evaluate score
-	if (depth === 0 || moves.length === 0) {
+	if (depth === 0 || validMoves.length === 0) {
 		bestScore = evaluate(board, player, opponent, 1);
 		return {
 			score: bestScore,
