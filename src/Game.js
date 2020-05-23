@@ -12,6 +12,7 @@ class Game extends React.Component {
 			players: ["X", "O"],
 			gameWinner: null,
 			stepNumber: 0,
+			opponent: "bot",
 			history: [{
 				bigBoard: null, // 4D array of cell values
 				boardsWinners: null, // 2D array of winners of smallBoards
@@ -19,6 +20,7 @@ class Game extends React.Component {
 				enabledBoards: null, // 2D array of enabled smallBoards
 			}],
 		};
+		this.handleOpponentChange = this.handleOpponentChange.bind(this);
 	}
 
 	
@@ -69,6 +71,38 @@ class Game extends React.Component {
 	}
 
 
+	handleOpponentChange(event) {
+		this.setState({opponent: event.target.value});
+	}
+	
+
+	opponentSelection() {
+		return(<label>
+			Play against &nbsp;
+			<select onChange={this.handleOpponentChange}>
+			<option value="bot">the computer</option>
+			<option value="human">a friend</option>
+			</select>
+		</label>);
+	}
+
+
+	settingsForm() {
+		return (
+			<form>
+			
+			{this.opponentSelection()} 
+			<br />
+			
+			<button onClick={() => this.startGame()} type="button">
+			Start a new game
+			</button>
+			
+			</form>
+		);
+	}
+
+
 	renderGameInfo(history) {
 		// Define status
 		var status;
@@ -105,10 +139,8 @@ class Game extends React.Component {
 		return (
 			<div className="game-info">
 			<div>{status}</div>
-			<button onClick={() => this.startGame()} type="button">
-			Start a new game
-			</button>
-			<ol>{movebuttons.slice(1,movebuttons.length)}</ol>
+			<div>{this.settingsForm()}</div>
+			<div><ol>{movebuttons.slice(1,movebuttons.length)}</ol></div>
 			</div>
 		);
 	}
