@@ -84,7 +84,67 @@ function array4D(size, fillin) {
 async function aiMove(stage) {
 	await new Promise(r => setTimeout(r, 500));
 	alert("aiMove called");
+	// var validMoves = module.exports.getValidMoves(stage);
+	/* function minimax(validMoves, prevscore) { */
+	// for (move in validMoves) {
+	//     let score = calculateScore(move);
+	//     if score better than prevscore => prevscore = score;
+	//
+	// }
+	//
+	/* } */
 }
 
-module.exports = {getCardinalPosition, getWinner, array2D, array3D, array4D};
+
+/* function makeMove(board, move) { */
+	// if (move)
+	// board[move[0]]
+/* } */
+
+function getValidMoves(board, last_move) {
+	// Throw exception if last_move out of boundaries
+	for (let i = 0 ; i < 4 ; i++) {
+		if (last_move) {
+			if (last_move[i] < 0 || last_move[i] > 2) {
+				return () => {throw new RangeError("Out of boundaries")};
+			}
+		}
+	}
+
+	// If bigBoard
+	var smallBoard;
+	var validMoves = [];
+	if (Array.isArray(board[0][0])) {
+		// if smallBoard not won => add all valid cells from this smallBoard only
+		smallBoard = board[last_move[2]][last_move[3]];
+		if (!module.exports.getWinner(smallBoard)) {
+			validMoves = module.exports.getValidMoves(smallBoard, [last_move[2], last_move[3], null, null]);
+			return validMoves;
+		}
+		// if smallBoard already won => add all valid moves from all smallboards not won
+		for (let i = 0; i < 3 ; i++) {
+			for (let j = 0; j < 3; j++) {
+				let newsmallBoard = board[i][j];
+				if (!module.exports.getWinner(newsmallBoard)) {
+					var validMovesSmallBoard = module.exports.getValidMoves(newsmallBoard, [i, j, null, null]);
+					validMovesSmallBoard.forEach(validMove => validMoves.push(validMove));
+				}
+			}
+		}
+		// console.log(validMoves); // for tests
+		return validMoves;
+	}
+	// If smallBoard => add all empty cells
+	for (let i = 0; i < 3 ; i++) {
+		for (let j = 0; j < 3; j++) {
+			if (!board[i][j]) {
+				validMoves.push([last_move[0], last_move[1], i, j]);
+			}
+		}
+	}
+	return validMoves;
+
+}
+
+module.exports = {getCardinalPosition, getWinner, array2D, array3D, array4D, aiMove, getValidMoves};
 
