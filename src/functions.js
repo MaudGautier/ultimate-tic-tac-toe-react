@@ -224,5 +224,40 @@ function evaluate(board, player, opponent, fixedPower = 1) {
 	return score;
 }
 
-module.exports = {getCardinalPosition, getWinner, array2D, array3D, array4D, aiMove, getValidMoves, evaluate, nbInAlignment};
+function negamax(board, last_move, depth, player, opponent) {
+	var validMoves = getValidMoves(board, last_move);
+	var bestScore, bestMove;
+
+	// If terminal node (i.e. no move possible) or reached AI level => evaluate score
+	if (depth === 0 || moves.length === 0) {
+		bestScore = evaluate(board, player, opponent, 1);
+		return {
+			score: bestScore,
+			move: null
+		};
+	}
+
+	// Search for best move
+	bestScore = -Infinity;
+	bestMove = null;
+	for (let i = 0; i < validMoves.length; i++) {
+		let newMove = validMoves[i];
+		let newBoard = JSON.parse(JSON.stringify(board));
+		newBoard[newMove[0]][newMove[1]][newMove[2]][newMove[3]] = player;
+		let newScore = -module.exports.negamax(newBoard, newMove, depth - 1, opponent, player).score;
+		if (newScore > bestScore) {
+			bestScore = newScore;
+			bestMove = newMove;
+		}
+	}
+
+	// Return value
+	return {
+		score: bestScore,
+		move: bestMove
+	};
+
+}
+
+module.exports = {getCardinalPosition, getWinner, array2D, array3D, array4D, aiMove, getValidMoves, evaluate, nbInAlignment, negamax};
 
