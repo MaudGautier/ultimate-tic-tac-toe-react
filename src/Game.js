@@ -1,7 +1,7 @@
 // Game class
 import React from 'react';
 import BigBoard from './BigBoard';
-import {getCardinalPosition, getWinner, array2D, array4D} from './functions';
+import {getCardinalPosition, getWinner, array2D, array4D, aiMove} from './functions';
 
 
 class Game extends React.Component {
@@ -13,6 +13,7 @@ class Game extends React.Component {
 			gameWinner: null,
 			stepNumber: 0,
 			opponent: "bot",
+			botPlayer: "O",
 			history: [{
 				bigBoard: null, // 4D array of cell values
 				boardsWinners: null, // 2D array of winners of smallBoards
@@ -213,6 +214,9 @@ class Game extends React.Component {
 			gameWinner: gameWinner,
 			stepNumber: history.length,
 		});
+
+
+		if (this.state.opponent === "bot" && this.state.playerTurn !== this.state.botPlayer) {aiMove();}
 
 	}
 

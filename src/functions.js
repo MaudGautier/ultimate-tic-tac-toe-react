@@ -71,6 +71,11 @@ module.exports = {
 
 	array4D: function(size, fillin) { 
 		return module.exports.array2D(size, module.exports.array2D(size, fillin));
+	},
+
+	aiMove: async function() {
+		await new Promise(r => setTimeout(r, 500));
+		alert("aiMove called");
 	}
 	
 }
