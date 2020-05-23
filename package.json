@@ -15,7 +15,6 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test": "jest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -33,7 +32,9 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "jest": "^26.0.1"
-  }
+  "devDependencies": {},
+  "description": "Ultimate tic-tac-toe in ReactJS",
+  "main": "index.js",
+  "author": "Maud Gautier <maud.j.gautier@gmail.com>",
+  "license": "MIT"
 }
