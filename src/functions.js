@@ -24,6 +24,7 @@ function getCardinalPosition (row, column) {
 	return cardinalPosition;
 }
 
+
 function getWinner(children) {
 	for (let i = 0; i < 3; i++) {
 		// Test rows
@@ -64,26 +65,26 @@ function getWinner(children) {
 	return "tie";
 }
 
+
 function array2D(size, fillin) { 
 	return Array.from(Array(size), () => new Array(size).fill(fillin)); 
 }
 
-function array4D(size, fillin) { 
-	return module.exports.array2D(size, module.exports.array2D(size, fillin));
+
+function array3D(size, fillin) {
+	return Array.from(Array(size), () => new module.exports.array2D(size, fillin));
 }
+
+
+function array4D(size, fillin) {
+	return Array.from(Array(size), () => new module.exports.array3D(size, fillin));
+}
+
 
 async function aiMove(stage) {
 	await new Promise(r => setTimeout(r, 500));
 	alert("aiMove called");
 }
 
+module.exports = {getCardinalPosition, getWinner, array2D, array3D, array4D};
 
-
-}
-
-
-function sum(a, b) {
-	return a + b;
-}
-module.exports = {sum, getCardinalPosition, getWinner, array2D, array4D, aiMove, getValidMoves};
-// module.exports = getCardinalPosition, getWinner, array2D, array4D, aiMove, getValidMoves, sum;
