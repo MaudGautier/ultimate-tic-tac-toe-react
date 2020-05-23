@@ -1,7 +1,6 @@
 // Functions
 
-module.exports = {
-	getCardinalPosition: function(row, column) {
+function getCardinalPosition (row, column) {
 		var cardinalPosition = "";
 
 		// Define N/S
@@ -23,9 +22,9 @@ module.exports = {
 			cardinalPosition = "C";
 		}
 		return cardinalPosition;
-	},
+	}
 
-	getWinner: function(children) {
+	function getWinner(children) {
 		for (let i = 0; i < 3; i++) {
 			// Test rows
 			if (children[i][0] 
@@ -63,20 +62,29 @@ module.exports = {
 
 		// Tie in other case (i.e. no alignment and everything full)
 		return "tie";
-	},
+	}
 
-	array2D: function(size, fillin) { 
+	function array2D(size, fillin) { 
 		return Array.from(Array(size), () => new Array(size).fill(fillin)); 
-	},
+	}
 
-	array4D: function(size, fillin) { 
+	function array4D(size, fillin) { 
 		return module.exports.array2D(size, module.exports.array2D(size, fillin));
-	},
+	}
 
-	aiMove: async function() {
+	async function aiMove(stage) {
 		await new Promise(r => setTimeout(r, 500));
 		alert("aiMove called");
 	}
-	
-}
 
+
+		
+
+	}
+
+
+function sum(a, b) {
+  return a + b;
+}
+module.exports = {sum, getCardinalPosition, getWinner, array2D, array4D, aiMove, getValidMoves};
+// module.exports = getCardinalPosition, getWinner, array2D, array4D, aiMove, getValidMoves, sum;
