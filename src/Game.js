@@ -1,7 +1,7 @@
 // Game class
 import React from 'react';
 import BigBoard from './BigBoard';
-import {getCardinalPosition, getWinner, array2D, array4D, aiMove} from './functions';
+import {getCardinalPosition, getWinner, array2D, array4D, negamax} from './functions';
 
 
 class Game extends React.Component {
@@ -217,7 +217,35 @@ class Game extends React.Component {
 		});
 
 
-		if (this.state.opponent === "bot" && this.state.playerTurn !== this.state.botPlayer) {aiMove();}
+		// if (this.state.opponent === "bot" && this.state.playerTurn !== this.state.botPlayer) {aiMove(current);}
+
+	}
+
+	componentDidUpdate() {
+		if (this.state.history.length === 1) {return;}
+		if (this.state.opponent === "bot" && this.state.playerTurn === "O") {
+
+			// Deep copy of history and boards
+			const history = this.state.history.slice(0, this.state.stepNumber + 1);
+			const current = history[history.length - 1];
+			const board = JSON.parse(JSON.stringify(current.bigBoard)); 
+			const last_move = current.move;
+			const depth = 2;
+			const player = this.state.playerTurn;
+			const opponent = player === "X" ? "O" : "X";
+
+
+			this.aiMove(board, last_move, depth, player, opponent);
+		}
+		// ATTENTION: voir comment faire si l'ordinateur joue en premier!!!!
+	}
+
+	async aiMove(board, last_move, depth, player, opponent) {
+		await new Promise(r => setTimeout(r, 500));
+		var move = negamax(board, last_move, depth, player, opponent).move;
+
+		// Make Move
+		this.handleClick(move[0], move[1], move[2], move[3]);
 
 	}
 

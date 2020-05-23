@@ -81,20 +81,6 @@ function array4D(size, fillin) {
 }
 
 
-async function aiMove(stage) {
-	await new Promise(r => setTimeout(r, 500));
-	alert("aiMove called");
-	// var validMoves = module.exports.getValidMoves(stage);
-	/* function minimax(validMoves, prevscore) { */
-	// for (move in validMoves) {
-	//     let score = calculateScore(move);
-	//     if score better than prevscore => prevscore = score;
-	//
-	// }
-	//
-	/* } */
-}
-
 
 /* function makeMove(board, move) { */
 	// if (move)
@@ -259,5 +245,5 @@ function negamax(board, last_move, depth, player, opponent) {
 
 }
 
-module.exports = {getCardinalPosition, getWinner, array2D, array3D, array4D, aiMove, getValidMoves, evaluate, nbInAlignment, negamax};
+module.exports = {getCardinalPosition, getWinner, array2D, array3D, array4D, getValidMoves, evaluate, nbInAlignment, negamax};
 
