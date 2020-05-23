@@ -1,5 +1,6 @@
-import {sum, getWinner, getValidMoves, array2D, array3D, array4D, evaluate} from './functions';
+import {sum, getWinner, getValidMoves, array2D, array3D, array4D, evaluate, nbInAlignment} from './functions';
 
+// getValidMoves
 test('getValidMoves: full smallBoard', () => {
 	let smallBoard = array2D(3, "X");
 	expect(getValidMoves(smallBoard, [0,0,0,0]).toBeNull);
@@ -59,7 +60,7 @@ test('getValidMoves: bigBoard with smallBoard won', () => {
 	bigBoard[rowSB][colSB][0][0] = "X";
 	bigBoard[rowSB][colSB][1][1] = "X";
 	bigBoard[rowSB][colSB][2][2] = "X";
-	
+
 	let expected_output = [];
 	for (let r = 0; r < 3; r++) {
 		for (let c = 0; c < 3; c++) {
@@ -79,7 +80,30 @@ test('getValidMoves: bigBoard with smallBoard won', () => {
 
 })
 
-// EVALUATE
+
+// nbInAlignment
+test('nbInAlignment', () => {
+	var SB_3X = array2D(3, null);
+	for (let i = 0; i < 3 ; i++) { SB_3X[i][i] = "X"; }
+	var SB_2X = array2D(3, null);
+	for (let i = 0; i < 2 ; i++) { SB_2X[i][i] = "X"; }
+	var SB_1X = array2D(3, null);
+	for (let i = 0; i < 1 ; i++) { SB_1X[i][i] = "X"; }
+	var SB_empty = array2D(3, null);
+
+	var SB_2X_O = array2D(3, null);
+	for (let i = 0; i < 2 ; i++) { SB_2X[i][i] = "X"; }
+	SB_2X_O[2][2] = "O";
+
+	expect(nbInAlignment(SB_3X[0][0], SB_3X[1][1], SB_3X[2][2], "X")).toBe(3);
+	expect(nbInAlignment(SB_2X[0][0], SB_2X[1][1], SB_2X[2][2], "X")).toBe(2);
+	expect(nbInAlignment(SB_1X[0][0], SB_1X[1][1], SB_1X[2][2], "X")).toBe(1);
+	expect(nbInAlignment(SB_2X_O[0][0], SB_2X_O[1][1], SB_2X_O[2][2], "X")).toBe(0);
+	expect(nbInAlignment(SB_3X[0][0], SB_3X[1][1], SB_3X[2][2], "O")).toBe(0);
+})
+
+
+// evaluate
 test('evaluate: score when bigBoard won', () => {
 
 	var bigBoard = array4D(3, null);

@@ -101,6 +101,7 @@ async function aiMove(stage) {
 	// board[move[0]]
 /* } */
 
+
 function getValidMoves(board, last_move) {
 	// Throw exception if last_move out of boundaries
 	for (let i = 0 ; i < 4 ; i++) {
@@ -145,10 +146,29 @@ function getValidMoves(board, last_move) {
 	return validMoves;
 }
 
-function evaluate(board, player, opponent) {
+
+function nbInAlignment(cell1, cell2, cell3, player) {
+	// Return 0 if something different than player or null (i.e. opponent or tie)
+	if ((cell1 && cell1 !== player) || 
+		(cell2 && cell2 !== player) || 
+		(cell3 && cell3 !== player)) {
+		return 0;
+	}
+	// Otherwise, count the number of aligned with player in
+	var count = 0;
+	if (cell1 === player) { count += 1; }
+	if (cell2 === player) { count += 1; }
+	if (cell3 === player) { count += 1; }
+	return count;
+}
+
+
+function evaluate(board, player, opponent, fixedPower = 1) {
 	var score = 0;
+	
 	// If bigBoard => count how many small boards won in alignement and add up score
 	if (Array.isArray(board[0][0])) {
+		
 		// Detect smallBoards won
 		var wonSB = module.exports.array2D(3, null);
 		for (let i = 0; i < 3; i++) {
