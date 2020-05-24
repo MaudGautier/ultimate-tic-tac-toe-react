@@ -26,6 +26,18 @@ function getCardinalPosition (row, column) {
 
 
 function getWinner(children) {
+
+	// If bigBoard
+	if (Array.isArray(children[0][0])) {
+		var wonSB = array2D(3, null);
+		for (let i = 0; i < 3; i++) {
+			for (let j = 0; j < 3; j++) {
+				wonSB[i][j] = getWinner(children[i][j])
+			}
+		}
+		return getWinner(wonSB);
+	}
+
 	for (let i = 0; i < 3; i++) {
 		// Test rows
 		if (children[i][0] 

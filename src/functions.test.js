@@ -1,4 +1,15 @@
-import {sum, getWinner, getValidMoves, array2D, array3D, array4D, evaluate, nbInAlignment} from './functions';
+import {sum, getWinner, getValidMoves, array2D, array3D, array4D, evaluate, nbInAlignment, negamax} from './functions';
+
+// getWinner
+test('getWinner', () => {
+	var BB_won = array4D(3, null);
+	for (let i = 0; i < 3; i++) {
+		for (let j = 0; j < 3; j++) {
+			BB_won[i][0][j][0] = "X";
+		}
+	}
+	expect(getWinner(BB_won)).toBe("X");
+})
 
 // getValidMoves
 test('getValidMoves: full smallBoard', () => {
