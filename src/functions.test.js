@@ -166,10 +166,120 @@ test('evaluate: score for a smallboard', () => {
 	expect(evaluate(SB_2X_O, "X", "O", -1)).toBeLessThan(evaluate(SB_2X, "X", "O", -1));
 	expect(evaluate(SB_2X_O, "X", "O", -1)).toBeCloseTo(evaluate(SB_1X, "X", "O", -1), 1);
 
-	var SB_2X_O_middle = array2D(3, null); SB_2X_O_middle[0][0] = "X" ; SB_2X_O_middle[1][1] = "O" ; SB_2X_O_middle[2][2] = "X" ; 
+	var SB_2X_O_middle = array2D(3, null); SB_2X_O_middle[0][0] = "X" ; SB_2X_O_middle[1][1] = "O" ; SB_2X_O_middle[2][2] = "X" ;
 	expect(evaluate(SB_2X_O_middle, "X", "O", -1)).toBeLessThan(evaluate(SB_2X_O, "X", "O", -1));
 
 })
+
+
+// Negamax
+test('negamax: choose to win when can', () => {
+	var BB = array4D(3, null);
+	for (let i = 0; i < 3 ; i++) {
+		for (let j = 0; j < 3 ; j++) {
+			BB[0][1][i][j] = "X";
+			BB[1][0][i][j] = "O";
+			BB[1][1][i][j] = "O";
+			BB[2][1][i][j] = "X";
+			BB[0][0][i][j] = "X";
+		}
+	}
+
+
+	BB[0][2][1][0] = "X";
+	BB[0][2][2][0] = "X";
+	BB[0][2][2][1] = "O";
+	BB[0][2][1][2] = "O";
+	BB[0][2][2][2] = "O";
+
+	BB[1][2][0][0] = "X";
+	BB[1][2][1][0] = "X";
+	BB[1][2][0][1] = "O";
+	BB[1][2][2][1] = "O";
+	BB[1][2][1][2] = "O";
+
+	BB[2][2][0][2] = "X";
+	BB[2][2][1][2] = "X";
+
+	BB[2][0][0][2] = "X";
+	BB[2][0][1][2] = "X";
+	BB[2][0][0][0] = "O";
+	BB[2][0][1][0] = "O";
+
+	// for (let i = 0; i < 3; i++) {
+		// for (let j = 0; j < 3 ; j++) {
+		//     console.log(i, j, BB[i][j]);
+		// }
+	// }
+
+	var last_move = [0,0,0,1];
+
+	// console.log(negamax(BB, last_move, 3, "O", "X", true));
+	var bestNeg = negamax(BB, last_move, 1, "O", "X", true);
+	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
+	expect(bestNeg.score).toBe(10000);
+
+	var bestNeg = negamax(BB, last_move, 2, "O", "X", true);
+	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
+	expect(bestNeg.score).toBe(10000);
+
+	var bestNeg = negamax(BB, last_move, 3, "O", "X", true);
+	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
+	expect(bestNeg.score).toBe(10000);
+
+})
+
+
+
+
+test('negamax: choose to win when can within ONLY 1 SB FREE', () => {
+	var BB = array4D(3, null);
+	for (let i = 0; i < 3 ; i++) {
+		for (let j = 0; j < 3 ; j++) {
+			BB[0][0][i][j] = "X";
+			BB[0][1][i][j] = "X";
+			BB[0][2][i][j] = "tie";
+			BB[1][0][i][j] = "O";
+			BB[1][1][i][j] = "O";
+			BB[2][0][i][j] = "tie";
+			BB[2][1][i][j] = "X";
+			BB[2][2][i][j] = "tie";
+		}
+	}
+	BB[1][2][0][0] = "X";
+	BB[1][2][1][0] = "X";
+	BB[1][2][0][1] = "O";
+	BB[1][2][2][1] = "O";
+	BB[1][2][1][2] = "O";
+
+	/* for (let i = 0; i < 3; i++) { */
+		// for (let j = 0; j < 3 ; j++) {
+		//     console.log(i, j, BB[i][j]);
+		// }
+	/* } */
+
+	var last_move = [0,0,0,1];
+
+	var bestNeg = negamax(BB, last_move, 1, "O", "X", true);
+	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
+	expect(bestNeg.score).toBe(10000);
+
+	var bestNeg = negamax(BB, last_move, 2, "O", "X", true);
+	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
+	expect(bestNeg.score).toBe(10000);
+
+	var bestNeg = negamax(BB, last_move, 3, "O", "X", true);
+	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
+	expect(bestNeg.score).toBe(10000);
+
+	var bestNeg = negamax(BB, last_move, 4, "O", "X", true);
+	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
+	expect(bestNeg.score).toBe(10000);
+
+
+
+})
+
 
 
 

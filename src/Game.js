@@ -230,7 +230,7 @@ class Game extends React.Component {
 			const current = history[history.length - 1];
 			const board = JSON.parse(JSON.stringify(current.bigBoard)); 
 			const last_move = current.move;
-			const depth = 2;
+			const depth = 3;
 			const player = this.state.playerTurn;
 			const opponent = player === "X" ? "O" : "X";
 
