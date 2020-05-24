@@ -114,6 +114,10 @@ function getValidMoves(board, last_move) {
 	var smallBoard;
 	var validMoves = [];
 	if (Array.isArray(board[0][0])) {
+
+		// If bigBoard won => return no Valid Move
+		if (module.exports.getWinner(board)) { return []; }
+
 		// if smallBoard not won => add all valid cells from this smallBoard only
 		smallBoard = board[last_move[2]][last_move[3]];
 		if (!module.exports.getWinner(smallBoard)) {

@@ -59,6 +59,15 @@ test('getValidMoves: bigBoard with smallBoard not won', () => {
 		[rowSB, colSB, 1, 0], [rowSB, colSB, 1, 1], [rowSB, colSB, 1, 2],
 		[rowSB, colSB, 2, 0], [rowSB, colSB, 2, 1], [rowSB, colSB, 2, 2],
 	];
+	// console.log(bigBoard[0][0]);
+	// console.log(bigBoard[0][1]);
+	// console.log(bigBoard[0][2]);
+	// console.log(bigBoard[1][0]);
+	// console.log(bigBoard[1][1]);
+	// console.log(bigBoard[1][2]);
+	// console.log(bigBoard[2][0]);
+	// console.log(bigBoard[2][1]);
+	// console.log(bigBoard[2][2]);
 	expect(getValidMoves(bigBoard, [rowBigB,colBigB,rowSB,colSB])).toEqual(expected_output);
 })
 
@@ -132,13 +141,13 @@ test('evaluate: score when bigBoard won', () => {
 test('evaluate: score for a smallboard', () => {
 	var SB_3X = array2D(3, null);
 	for (let i = 0; i < 3 ; i++) { SB_3X[0][i] = "X"; }
-	
+
 	var SB_2X = array2D(3, null);
 	for (let i = 0; i < 2 ; i++) { SB_2X[0][i] = "X"; }
-	
+
 	var SB_1X = array2D(3, null);
 	for (let i = 0; i < 1 ; i++) { SB_1X[0][i] = "X"; }
-	
+
 	var SB_2X_O = array2D(3, null);
 	for (let i = 0; i < 2 ; i++) { SB_2X_O[i][i] = "X"; }
 	SB_2X_O[2][2] = "O";
