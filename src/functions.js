@@ -239,85 +239,66 @@ function evaluate(board, player, opponent, fixedPower = 1) {
 }
 
 
-function negamax(board, last_move, depth, player, opponent, maximizingPlayer = true) {
-	// console.log("begin: depth", depth, "player ", player, maximizingPlayer, "last_move: ", last_move)
-	var validMoves = getValidMoves(board, last_move);
-	var bestScore, bestMove;
+function minimax(board, lastMove, depth, player, alpha, beta, aiPlayer) {
+	var validMoves = getValidMoves(board, lastMove);
+	// console.log(player, moves, moves.length, depth);
+	var score, bestMove;
+	var opponent = player === "X" ? "O" : "X";
 
-	// If terminal node (i.e. no move possible) or reached AI level => evaluate score
-	if (depth === 0 || validMoves.length === 0) {
-		// if (maximizingPlayer) {
-		bestScore = evaluate(board, player, opponent, 1);
-		// } else { bestScore = evaluate(board, opponent, player, 1); }
+	if (validMoves.length === 0 || depth === 0) {
+		var nodeScore = evaluate(board, aiPlayer, aiPlayer === "X" ? "O" : "X", 1);
+		// console.log(nodeScore);
 		return {
-			score: bestScore,
+			score: nodeScore, 
 			move: null
 		};
 	}
 
-	// MINIMAX
-	if (maximizingPlayer) {
-		// console.log("MAX depth", depth);
-		bestScore = -Infinity;
-		for (let i = 0; i < validMoves.length; i++) {
-			let newMove = validMoves[i];
-			// console.log("TEST NEW VALID MOVE AT DEPTH ", depth, ": ", newMove, "FROM LAST MOVE:", last_move, "so far: bestScore: ", bestScore, "for bestMove: ", bestMove);
-			let newBoard = JSON.parse(JSON.stringify(board));
-			newBoard[newMove[0]][newMove[1]][newMove[2]][newMove[3]] = player;
-			let newScore = module.exports.negamax(newBoard, newMove, depth - 1, player, opponent, false).score;
-			// console.log("foo");
-			if (newScore > bestScore) {
-				bestScore = newScore;
-				bestMove = newMove;
-			}
-			// console.log("yo");
-				// console.log("SCORE:", newScore, " DEPTH: ", depth - 1, " NEW MOVE", newMove, "BEST SCORE:", bestScore, "BEST MOVE: ", bestMove);
-		}
+	var maximizingPlayer;
+	if (aiPlayer === player) {
+		maximizingPlayer = true;
+	} else {
+		maximizingPlayer = false;
 	}
-	else {
-		bestScore = +Infinity;
-		// console.log("Minimizing depth", depth);
-		for (let i = 0; i < validMoves.length; i++) {
-			let newMove = validMoves[i];
-			// console.log("TEST NEW VALID MOVE AT DEPTH ", depth, ": ", newMove, "FROM LAST MOVE:", last_move);
-			let newBoard = JSON.parse(JSON.stringify(board));
-			newBoard[newMove[0]][newMove[1]][newMove[2]][newMove[3]] = player;
-			let newScore = module.exports.negamax(newBoard, newMove, depth - 1, opponent, player, true).score;
-			if (newScore < bestScore) {
-				bestScore = newScore;
-				bestMove = newMove;
 
-				// console.log("SCORE:", newScore, " DEPTH: ", depth - 1, " NEW MOVE", newMove, "BEST SCORE:", bestScore, "BEST MOVE: ", bestMove);
+	for (var i = 0; i < validMoves.length; i++) {
+		var newMove = validMoves[i];
+
+		let newBoard = JSON.parse(JSON.stringify(board));
+		newBoard[newMove[0]][newMove[1]][newMove[2]][newMove[3]] = player;
+		// console.log(player, "chooses move", newMove);
+
+		score = minimax(newBoard, newMove, depth - 1, player === "X" ? "O" : "X", alpha, beta, aiPlayer).score;
+		// console.log("At depth", depth, "Move", newMove, "tested obtained score", score, "vs alpha", alpha, "beta ", beta, player);
+		if (maximizingPlayer) {
+			if (score > alpha) {
+				alpha = score;
+				bestMove = newMove;
+				// console.log("=> New alpha", alpha, "New Best Move", bestMove);
 			}
 		}
+		else { 
+			if (score < beta) {
+				beta = score;
+				bestMove = newMove;
+				// console.log("=> New beta", beta, "New Best Move", bestMove);
+			}
+		}
+		// UNDO MOVE
+		if (alpha >= beta) {
+			break;
+		}
+
 	}
-	// console.log("FINAL: ", bestScore, bestMove, "depth: ", depth)
-
-	/* // Search for best move */
-	// bestScore = -Infinity;
-	// bestMove = null;
-	// for (let i = 0; i < validMoves.length; i++) {
-	//     let newMove = validMoves[i];
-	//     console.log("LOOPING FOR ", newMove, ", PLAYER: ", player, " DEPTH=", depth);
-	//     let newBoard = JSON.parse(JSON.stringify(board));
-	//     newBoard[newMove[0]][newMove[1]][newMove[2]][newMove[3]] = player;
-	//     let newScore = -module.exports.negamax(newBoard, newMove, depth - 1, opponent, player).score;
-	//     // if (newMove[1] == 2) {
-	//         console.log(player, newMove, newScore, bestScore, bestMove);
-	//     // }
-	//     if (newScore > bestScore) {
-	//         bestScore = newScore;
-	//         bestMove = newMove;
-	//     }
-	/* } */
-
-	// Return value
 	return {
-		score: bestScore,
+		score: maximizingPlayer ? alpha : beta,
 		move: bestMove
 	};
 
 }
 
-module.exports = {getCardinalPosition, getWinner, array2D, array3D, array4D, getValidMoves, evaluate, nbInAlignment, negamax};
+
+
+
+module.exports = {getCardinalPosition, getWinner, array2D, array3D, array4D, getValidMoves, evaluate, nbInAlignment, minimax};
 

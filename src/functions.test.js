@@ -1,4 +1,4 @@
-import {sum, getWinner, getValidMoves, array2D, array3D, array4D, evaluate, nbInAlignment, negamax} from './functions';
+import {sum, getWinner, getValidMoves, array2D, array3D, array4D, evaluate, nbInAlignment, minimax} from './functions';
 
 // getWinner
 test('getWinner', () => {
@@ -171,9 +171,8 @@ test('evaluate: score for a smallboard', () => {
 
 })
 
-
-// Negamax
-test('negamax: choose to win when can', () => {
+// MINIMAX
+test('minimax: choose to win when can', () => {
 	var BB = array4D(3, null);
 	for (let i = 0; i < 3 ; i++) {
 		for (let j = 0; j < 3 ; j++) {
@@ -214,25 +213,36 @@ test('negamax: choose to win when can', () => {
 
 	var last_move = [0,0,0,1];
 
-	// console.log(negamax(BB, last_move, 3, "O", "X", true));
-	var bestNeg = negamax(BB, last_move, 1, "O", "X", true);
+	var depth = 2;
+	var player = "O";
+	var aiPlayer = "O";
+	var alpha = -Infinity;
+	var beta = +Infinity;
+
+	// console.log(minimax(BB, last_move, depth, player, alpha, beta, aiPlayer));
+	var bestNeg = minimax(BB, last_move, 1, player, alpha, beta, aiPlayer);
 	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
 
-	var bestNeg = negamax(BB, last_move, 2, "O", "X", true);
+	var bestNeg = minimax(BB, last_move, 2, player, alpha, beta, aiPlayer);
 	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
 
-	var bestNeg = negamax(BB, last_move, 3, "O", "X", true);
+	var bestNeg = minimax(BB, last_move, 3, player, alpha, beta, aiPlayer);
 	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
+
+	var bestNeg = minimax(BB, last_move, 4, player, alpha, beta, aiPlayer);
+	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
+	expect(bestNeg.score).toBe(10000);
+
 
 })
 
 
 
 
-test('negamax: choose to win when can within ONLY 1 SB FREE', () => {
+test('minimax: choose to win when can within ONLY 1 SB FREE', () => {
 	var BB = array4D(3, null);
 	for (let i = 0; i < 3 ; i++) {
 		for (let j = 0; j < 3 ; j++) {
@@ -252,34 +262,285 @@ test('negamax: choose to win when can within ONLY 1 SB FREE', () => {
 	BB[1][2][2][1] = "O";
 	BB[1][2][1][2] = "O";
 
-	/* for (let i = 0; i < 3; i++) { */
+	// for (let i = 0; i < 3; i++) {
 		// for (let j = 0; j < 3 ; j++) {
 		//     console.log(i, j, BB[i][j]);
 		// }
-	/* } */
+	// }
 
 	var last_move = [0,0,0,1];
 
-	var bestNeg = negamax(BB, last_move, 1, "O", "X", true);
+	var depth = 2;
+	var player = "O";
+	var aiPlayer = "O";
+	var alpha = -Infinity;
+	var beta = +Infinity;
+
+	// console.log(minimax(BB, last_move, depth, player, alpha, beta, aiPlayer));
+	var bestNeg = minimax(BB, last_move, 1, player, alpha, beta, aiPlayer);
 	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
 
-	var bestNeg = negamax(BB, last_move, 2, "O", "X", true);
+	var bestNeg = minimax(BB, last_move, 2, player, alpha, beta, aiPlayer);
 	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
 
-	var bestNeg = negamax(BB, last_move, 3, "O", "X", true);
+	var bestNeg = minimax(BB, last_move, 3, player, alpha, beta, aiPlayer);
 	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
 
-	var bestNeg = negamax(BB, last_move, 4, "O", "X", true);
+	var bestNeg = minimax(BB, last_move, 4, player, alpha, beta, aiPlayer);
 	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
-
-
 
 })
 
+
+
+
+test('minimax: choose to not let other win (MORE ADVANCED)', () => {
+	var BB = array4D(3, null);
+	for (let i = 0; i < 3 ; i++) {
+		for (let j = 0; j < 3 ; j++) {
+			BB[0][0][i][j] = "X";
+			BB[0][1][i][j] = "X";
+
+			BB[1][0][i][j] = "X";
+
+			BB[2][1][i][j] = "O";
+		}
+	}
+	BB[0][2][0][0] = null;
+	BB[0][2][0][1] = "O";
+	BB[0][2][0][2] = "O";
+	BB[0][2][1][0] = "O";
+	BB[0][2][1][1] = "O";
+	BB[0][2][1][2] = "X";
+	BB[0][2][2][0] = "X";
+	BB[0][2][2][1] = null;
+	BB[0][2][2][2] = "X";
+
+	BB[1][1][0][0] = "O";
+	BB[1][1][0][1] = "O";
+	BB[1][1][0][2] = null;
+	BB[1][1][1][0] = "X";
+	BB[1][1][1][1] = "X";
+	BB[1][1][1][2] = "O";
+	BB[1][1][2][0] = "O";
+	BB[1][1][2][1] = "X";
+	BB[1][1][2][2] = "X";
+
+	BB[1][2][0][0] = null;
+	BB[1][2][0][1] = "X";
+	BB[1][2][0][2] = "X";
+	BB[1][2][1][0] = "O";
+	BB[1][2][1][1] = null;
+	BB[1][2][1][2] = null;
+	BB[1][2][2][0] = null;
+	BB[1][2][2][1] = "X";
+	BB[1][2][2][2] = null;
+
+	BB[2][0][0][0] = null;
+	BB[2][0][0][1] = null;
+	BB[2][0][0][2] = "O";
+	BB[2][0][1][0] = null;
+	BB[2][0][1][1] = "O";
+	BB[2][0][1][2] = null;
+	BB[2][0][2][0] = "X";
+	BB[2][0][2][1] = "X";
+	BB[2][0][2][2] = null;
+
+	BB[2][2][0][0] = null;
+	BB[2][2][0][1] = null;
+	BB[2][2][0][2] = "O";
+	BB[2][2][1][0] = null;
+	BB[2][2][1][1] = "O";
+	BB[2][2][1][2] = "O";
+	BB[2][2][2][0] = null;
+	BB[2][2][2][1] = null;
+	BB[2][2][2][2] = null;
+
+
+	// for (let i = 0; i < 3; i++) {
+	//     for (let j = 0; j < 3 ; j++) {
+	//         console.log(i, j, BB[i][j]);
+	//     }
+	// }
+	//
+	// var last_move = [0,0,0,0];
+	// var bestNeg = negamax(BB, last_move, 1, "O", "X", true);
+	// console.log(bestNeg);
+	//
+	// var last_move = [0,0,0,1];
+	// var bestNeg = negamax(BB, last_move, 1, "O", "X", true);
+	// console.log(bestNeg);
+	//
+	// var last_move = [1,1,1,0];
+	// var bestNeg = negamax(BB, last_move, 1, "O", "X", true);
+	// console.log(bestNeg);
+
+	var alpha = -Infinity;
+	var beta = Infinity;
+	var player = "O";
+	var aiPlayer = "O";
+	var last_move = [0,2,2,0];
+	// var bestNeg = minimax(BB, last_move, 1, player, alpha, beta, aiPlayer);
+	// console.log(bestNeg);
+	
+	// Should work from depth 2 on (not necessarily depth 1)
+	var bestNeg = minimax(BB, last_move, 2, player, alpha, beta, aiPlayer);
+	expect(bestNeg.move).toEqual([2, 0, 2, 2]);
+
+	var bestNeg = minimax(BB, last_move, 3, player, alpha, beta, aiPlayer);
+	expect(bestNeg.move).toEqual([2, 0, 2, 2]);
+
+	var bestNeg = minimax(BB, last_move, 4, player, alpha, beta, aiPlayer);
+	expect(bestNeg.move).toEqual([2, 0, 2, 2]);
+
+	var bestNeg = minimax(BB, last_move, 5, player, alpha, beta, aiPlayer);
+	expect(bestNeg.move).toEqual([2, 0, 2, 2]);
+
+})
+
+
+// // POUR FAIRE PASSER CE TEST: avoir une eval du score qui inclut le contenu de 3eme small board dans les alignements à 2 SB deja gagnes
+// // PB ici: l'evaluation du score n'est pas bonne
+// test('choose best board among possibilities', () => {
+//     var BB = array4D(3, null);
+//     for (let i = 0; i < 3 ; i++) {
+//         for (let j = 0; j < 3 ; j++) {
+//             BB[0][0][i][j] = "X";
+//             // BB[0][1][i][j] = "X";
+//             BB[0][2][i][j] = "X";
+//             BB[1][0][i][j] = "X";
+//             // BB[1][1][i][j] = "O";
+//             BB[1][2][i][j] = "O";
+//             BB[2][0][i][j] = "O";
+//             BB[2][1][i][j] = "O";
+//             // BB[2][2][i][j] = "tie";
+//         }
+//     }
+//     console.log(evaluate(BB, "O", "X", 1))
+//
+//     BB[0][1][0][0] = "O";
+//     BB[0][1][0][1] = "X";
+//     BB[0][1][0][2] = null;
+//     BB[0][1][1][0] = null;
+//     BB[0][1][1][1] = null;
+//     BB[0][1][1][2] = null;
+//     BB[0][1][2][0] = null;
+//     BB[0][1][2][1] = "X";
+//     BB[0][1][2][2] = null;
+//
+//     BB[1][1][0][0] = null;
+//     BB[1][1][0][1] = null;
+//     BB[1][1][0][2] = null;
+//     BB[1][1][1][0] = null;
+//     BB[1][1][1][1] = "O";
+//     BB[1][1][1][2] = null;
+//     BB[1][1][2][0] = "X";
+//     BB[1][1][2][1] = "X";
+//     BB[1][1][2][2] = null;
+//
+//     BB[2][2][0][0] = "O";
+//     BB[2][2][0][1] = null;
+//     BB[2][2][0][2] = null;
+//     BB[2][2][1][0] = null;
+//     BB[2][2][1][1] = null;
+//     BB[2][2][1][2] = "X";
+//     BB[2][2][2][0] = null;
+//     BB[2][2][2][1] = null;
+//     BB[2][2][2][2] = "X";
+//
+//
+//     for (let i = 0; i < 3; i++) {
+//         for (let j = 0; j < 3 ; j++) {
+//             console.log(i, j, BB[i][j]);
+//         }
+//     }
+//
+//
+//     var last_move = [0,2,2,2];
+//
+//     var depth = 4;
+//     var player = "O";
+//     var aiPlayer = "O";
+//     var alpha = -Infinity;
+//     var beta = +Infinity;
+//
+//     // console.log(minimax(BB, last_move, 1, player, alpha, beta, aiPlayer));
+//     // console.log(minimax(BB, last_move, 2, player, alpha, beta, aiPlayer));
+//     // console.log(minimax(BB, last_move, 3, player, alpha, beta, aiPlayer));
+//     console.log(minimax(BB, last_move, 4, player, alpha, beta, aiPlayer));
+//
+//     console.log(evaluate(BB, "O", "X", 1));
+//
+//     var BB2;
+//     BB2 = JSON.parse(JSON.stringify(BB));
+//     BB2[2][2][0][1] = "O";
+//     console.log(evaluate(BB2, "O", "X", 1));
+//
+//     BB2 = JSON.parse(JSON.stringify(BB));
+//     BB2[2][2][0][2] = "O";
+//     console.log(evaluate(BB2, "O", "X", 1));
+//
+//     BB2 = JSON.parse(JSON.stringify(BB));
+//     BB2[2][2][1][0] = "O";
+//     console.log(evaluate(BB2, "O", "X", 1));
+//
+//     BB2 = JSON.parse(JSON.stringify(BB));
+//     BB2[2][2][1][1] = "O";
+//     console.log(evaluate(BB2, "O", "X", 1));
+//
+//     BB2 = JSON.parse(JSON.stringify(BB));
+//     BB2[2][2][2][0] = "O";
+//     console.log(evaluate(BB2, "O", "X", 1));
+//
+//     BB2 = JSON.parse(JSON.stringify(BB));
+//     BB2[2][2][2][1] = "O";
+//     console.log(evaluate(BB2, "O", "X", 1));
+//
+//
+//
+	// // var bestNeg = minimax(BB, last_move, 1, player, alpha, beta, aiPlayer);
+//     // expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
+//     // expect(bestNeg.score).toBe(10000);
+//
+// })
+
+
+
+test('eval score of similar boards', () => {
+	var BB = array4D(3, null);
+	for (let i = 0; i < 3 ; i++) {
+		for (let j = 0; j < 3 ; j++) {
+			BB[0][0][i][j] = "X";
+			// BB[0][1][i][j] = "X";
+			BB[0][2][i][j] = "X";
+			BB[1][0][i][j] = "X";
+			// BB[1][1][i][j] = "O";
+			BB[1][2][i][j] = "O";
+			BB[2][0][i][j] = "O";
+			BB[2][1][i][j] = "O";
+			// BB[2][2][i][j] = "tie";
+		}
+	}
+    var wonSB = [ [ 'X', null, 'X' ], [ 'X', null, 'O' ], [ 'O', 'O', null ] ];
+	expect(evaluate(wonSB, "O", "X", 1)).toBe(evaluate(BB, "O", "X", 1));
+	// console.log(evaluate(wonSB, "O", "X", 1));
+	// console.log(evaluate(BB, "O", "X", 1));
+
+	// BB[0][1][0][0] = "O";
+	// BB[0][1][0][1] = "X";
+	// BB[0][1][0][2] = null;
+	// BB[0][1][1][0] = null;
+	// BB[0][1][1][1] = null;
+	// BB[0][1][1][2] = null;
+	// BB[0][1][2][0] = null;
+	// BB[0][1][2][1] = "X";
+	// BB[0][1][2][2] = null;
+
+})
 
 
 
