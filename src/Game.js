@@ -69,6 +69,7 @@ class Game extends React.Component {
 			stepNumber: step,
 			playerTurn: (step % 2) === 0 ? "X" : "O",
 		});
+
 	}
 
 
@@ -226,23 +227,21 @@ class Game extends React.Component {
 			const history = this.state.history.slice(0, this.state.stepNumber + 1);
 			const current = history[history.length - 1];
 			const board = JSON.parse(JSON.stringify(current.bigBoard)); 
-			const last_move = current.move;
+			const lastMove = current.move;
 			const depth = 4;
 			const player = this.state.playerTurn;
 			const opponent = player === "X" ? "O" : "X";
 
 			if (!this.state.gameWinner) {
-				this.aiMove(board, last_move, depth, player);
+				this.aiMove(board, lastMove, depth, player);
 			}			
 		}
 		// ATTENTION: voir comment faire si l'ordinateur joue en premier!!!!
 	}
 
-	// async aiMove(board, last_move, depth, player, opponent) {
-	async aiMove(board, last_move, depth, player) {
+	async aiMove(board, lastMove, depth, player) {
 		await new Promise(r => setTimeout(r, 500));
-		// var move = negamax(board, last_move, depth, player, opponent).move;
-		var move = minimax(board, last_move, depth, player, -Infinity, Infinity, this.state.botPlayer).move;
+		var move = minimax(board, lastMove, depth, player, -Infinity, Infinity, this.state.botPlayer).move;
 
 		// Make Move
 		this.handleClick(move[0], move[1], move[2], move[3]);
