@@ -165,6 +165,14 @@ function nbInAlignment(cell1, cell2, cell3, player) {
 }
 
 
+function getScore(nbAligned, fixedPower) {
+	if (nbAligned > 0) {
+		return Math.pow(10, nbAligned + fixedPower);
+	}
+	return 0;
+}
+
+
 function evaluate(board, player, opponent, fixedPower = 1) {
 	var score = 0;
 	
@@ -182,7 +190,7 @@ function evaluate(board, player, opponent, fixedPower = 1) {
 		// Return score if bigBoard won
 		if (module.exports.getWinner(wonSB) === player) { return Math.pow(10, fixedPower + 3); }
 		else if (module.exports.getWinner(wonSB) === opponent) { return -Math.pow(10, fixedPower + 3); }
-		
+
 		// Augment score for alignments of SB => return evaluate(wonSB, player, opponent, 1)
 		score += evaluate(wonSB, player, opponent, 1);
 
@@ -200,27 +208,31 @@ function evaluate(board, player, opponent, fixedPower = 1) {
 	// Rows
 	for (let i = 0; i < 3 ; i++) {
 		nbAligned = nbInAlignment(board[i][0], board[i][1], board[i][2], player);
-		score += Math.pow(10, nbAligned + fixedPower);
+		score += getScore(nbAligned, fixedPower);
+		// console.log(i, player, nbAligned, getScore(nbAligned, fixedPower), score);
 		nbAligned = nbInAlignment(board[i][0], board[i][1], board[i][2], opponent);
-		score -= Math.pow(10, nbAligned + fixedPower);
+		score -= getScore(nbAligned, fixedPower);
+		// console.log(i, opponent, nbAligned, -getScore(nbAligned, fixedPower), score);
 	}
 	// Columns
 	for (let j = 0; j < 3; j++) {
 		nbAligned = nbInAlignment(board[0][j], board[1][j], board[2][j], player);
-		score += Math.pow(10, nbAligned + fixedPower);
+		score += getScore(nbAligned, fixedPower);
+		// console.log(j, player, nbAligned, score);
 		nbAligned = nbInAlignment(board[0][j], board[1][j], board[2][j], opponent);
-		score -= Math.pow(10, nbAligned + fixedPower);
+		score -= getScore(nbAligned, fixedPower);
+		// console.log(j, opponent, nbAligned, score);
 	}
 	// Diag 1
 	nbAligned = nbInAlignment(board[0][0], board[1][1], board[2][2], player);
-	score += Math.pow(10, nbAligned + fixedPower);
+	score += getScore(nbAligned, fixedPower);
 	nbAligned = nbInAlignment(board[0][0], board[1][1], board[2][2], opponent);
-	score -= Math.pow(10, nbAligned + fixedPower);
+	score -= getScore(nbAligned, fixedPower);
 	// Diag 2
 	nbAligned = nbInAlignment(board[0][2], board[1][1], board[2][0], player);
-	score += Math.pow(10, nbAligned + fixedPower);
+	score += getScore(nbAligned, fixedPower);
 	nbAligned = nbInAlignment(board[0][2], board[1][1], board[2][0], opponent);
-	score -= Math.pow(10, nbAligned + fixedPower);
+	score -= getScore(nbAligned, fixedPower);
 
 	// Final score
 	return score;
