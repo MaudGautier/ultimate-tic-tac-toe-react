@@ -216,9 +216,6 @@ class Game extends React.Component {
 			stepNumber: history.length,
 		});
 
-
-		// if (this.state.opponent === "bot" && this.state.playerTurn !== this.state.botPlayer) {aiMove(current);}
-
 	}
 
 	componentDidUpdate() {
@@ -234,8 +231,9 @@ class Game extends React.Component {
 			const player = this.state.playerTurn;
 			const opponent = player === "X" ? "O" : "X";
 
-
-			this.aiMove(board, last_move, depth, player);
+			if (!this.state.gameWinner) {
+				this.aiMove(board, last_move, depth, player);
+			}			
 		}
 		// ATTENTION: voir comment faire si l'ordinateur joue en premier!!!!
 	}
