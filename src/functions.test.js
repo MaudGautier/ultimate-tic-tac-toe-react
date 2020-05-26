@@ -386,7 +386,7 @@ test('minimax: choose to not let other win (MORE ADVANCED)', () => {
 	var last_move = [0,2,2,0];
 	// var bestNeg = minimax(BB, last_move, 1, player, alpha, beta, aiPlayer);
 	// console.log(bestNeg);
-	
+
 	// Should work from depth 2 on (not necessarily depth 1)
 	var bestNeg = minimax(BB, last_move, 2, player, alpha, beta, aiPlayer);
 	expect(bestNeg.move).toEqual([2, 0, 2, 2]);
@@ -525,7 +525,7 @@ test('eval score of similar boards', () => {
 			// BB[2][2][i][j] = "tie";
 		}
 	}
-    var wonSB = [ [ 'X', null, 'X' ], [ 'X', null, 'O' ], [ 'O', 'O', null ] ];
+	var wonSB = [ [ 'X', null, 'X' ], [ 'X', null, 'O' ], [ 'O', 'O', null ] ];
 	expect(evaluate(wonSB, "O", "X", 1)).toBe(evaluate(BB, "O", "X", 1));
 	// console.log(evaluate(wonSB, "O", "X", 1));
 	// console.log(evaluate(BB, "O", "X", 1));
@@ -544,3 +544,137 @@ test('eval score of similar boards', () => {
 
 
 
+
+// Some real games
+test('real games to win in one move', () => {
+
+	// Un jeu reel
+
+	var BB = array4D(3, null);
+	for (let i = 0; i < 3 ; i++) {
+		for (let j = 0; j < 3 ; j++) {
+			BB[0][0][i][j] = "O";
+			BB[0][1][i][j] = "X";
+			// BB[0][1][i][j] = "X";
+			BB[1][0][i][j] = "O";
+			BB[1][1][i][j] = "O";
+			BB[1][2][i][j] = "X";
+			BB[2][0][i][j] = "X";
+			BB[2][1][i][j] = "X";
+			// BB[2][2][i][j] = "X";
+		}
+	}
+
+	BB[0][2][0][0] = null;
+	BB[0][2][0][1] = null;
+	BB[0][2][0][2] = "X";
+	BB[0][2][1][0] = "O";
+	BB[0][2][1][1] = null;
+	BB[0][2][1][2] = "X";
+	BB[0][2][2][0] = "O";
+	BB[0][2][2][1] = "X";
+	BB[0][2][2][2] = null;
+
+
+	BB[2][2][0][0] = "X";
+	BB[2][2][0][1] = null;
+	BB[2][2][0][2] = null;
+	BB[2][2][1][0] = "O";
+	BB[2][2][1][1] = null;
+	BB[2][2][1][2] = "O";
+	BB[2][2][2][0] = null;
+	BB[2][2][2][1] = "O";
+	BB[2][2][2][2] = "X";
+
+	/* for (let i = 0; i < 3 ; i++) { */
+		// for (let j = 0; j < 3 ; j++) {
+		//     console.log(BB[i][j]);
+		// }
+	/* } */
+
+	var last_move = [2,1,0,1];
+
+	var depth = 4;
+	var player = "O";
+	var aiPlayer = "O";
+	var alpha = -Infinity;
+	var beta = +Infinity;
+
+	var bestNeg = minimax(BB, last_move, 1, player, alpha, beta, aiPlayer);
+	expect(bestNeg.move).toEqual( [ 2, 2, 1, 1 ]);
+	expect(bestNeg.score).toBe(10000);
+
+
+
+
+	// Un autre jeu reel
+
+	BB = array4D(3, null);
+	for (let i = 0; i < 3 ; i++) {
+		for (let j = 0; j < 3 ; j++) {
+			BB[0][0][i][j] = "X";
+			BB[0][1][i][j] = "X";
+			BB[0][2][i][j] = "O";
+			// BB[1][0][i][j] = "O";
+			BB[1][1][i][j] = "O";
+			// BB[1][2][i][j] = "X";
+			// BB[2][0][i][j] = "X";
+			BB[2][1][i][j] = "X";
+			BB[2][2][i][j] = "O";
+		}
+	}
+
+	BB[1][0][0][0] = "O";
+	BB[1][0][0][1] = "O";
+	BB[1][0][0][2] = "X";
+	BB[1][0][1][0] = "X";
+	BB[1][0][1][1] = "O";
+	BB[1][0][1][2] = "O";
+	BB[1][0][2][0] = "X";
+	BB[1][0][2][1] = null;
+	BB[1][0][2][2] = null;
+
+
+	BB[1][2][0][0] = null;
+	BB[1][2][0][1] = null;
+	BB[1][2][0][2] = null;
+	BB[1][2][1][0] = "X";
+	BB[1][2][1][1] = null;
+	BB[1][2][1][2] = "X";
+	BB[1][2][2][0] = "O";
+	BB[1][2][2][1] = "O";
+	BB[1][2][2][2] = null;
+
+
+	BB[2][0][0][0] = "O";
+	BB[2][0][0][1] = "X";
+	BB[2][0][0][2] = null;
+	BB[2][0][1][0] = "X";
+	BB[2][0][1][1] = "O";
+	BB[2][0][1][2] = null;
+	BB[2][0][2][0] = "X";
+	BB[2][0][2][1] = "O";
+	BB[2][0][2][2] = "X";
+
+	/* for (let i = 0; i < 3 ; i++) { */
+		// for (let j = 0; j < 3 ; j++) {
+		//     console.log(BB[i][j]);
+		// }
+	/* } */
+
+	var last_move = [2,0,0,1];
+
+	var depth = 8;
+	var player = "O";
+	var aiPlayer = "O";
+	var alpha = -Infinity;
+	var beta = +Infinity;
+
+
+	var bestNeg = minimax(BB, last_move, 1, player, alpha, beta, aiPlayer);
+	expect(bestNeg.move).toEqual([ 1, 2, 2, 2 ]);
+	expect(bestNeg.score).toBe(10000);
+
+
+
+})
