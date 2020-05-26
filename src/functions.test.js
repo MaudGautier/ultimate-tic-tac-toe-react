@@ -1,4 +1,4 @@
-import {sum, getWinner, getValidMoves, array2D, array3D, array4D, evaluate, nbInAlignment, minimax} from './functions';
+import {sum, getWinner, getValidMoves, array2D, array3D, array4D, evaluate, nbInAlignment, negamax} from './functions';
 
 // getWinner
 test('getWinner', () => {
@@ -159,8 +159,8 @@ test('evaluate: score for a smallboard', () => {
 
 })
 
-// MINIMAX
-test('minimax: choose to win when can', () => {
+// negamax
+test('negamax: choose to win when can', () => {
 	var BB = array4D(3, null);
 	for (let i = 0; i < 3 ; i++) {
 		for (let j = 0; j < 3 ; j++) {
@@ -203,24 +203,24 @@ test('minimax: choose to win when can', () => {
 
 	var depth = 2;
 	var player = "O";
-	var aiPlayer = "O";
 	var alpha = -Infinity;
 	var beta = +Infinity;
 
-	// console.log(minimax(BB, last_move, depth, player, alpha, beta, aiPlayer));
-	var bestNeg = minimax(BB, last_move, 1, player, alpha, beta, aiPlayer);
+	// console.log(negamax(BB, last_move, depth, player, alpha, beta));
+	var bestNeg = negamax(BB, last_move, 1, player, alpha, beta);
+	// console.log(bestNeg);
 	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
 
-	var bestNeg = minimax(BB, last_move, 2, player, alpha, beta, aiPlayer);
+	var bestNeg = negamax(BB, last_move, 2, player, alpha, beta);
 	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
 
-	var bestNeg = minimax(BB, last_move, 3, player, alpha, beta, aiPlayer);
+	var bestNeg = negamax(BB, last_move, 3, player, alpha, beta);
 	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
 
-	var bestNeg = minimax(BB, last_move, 4, player, alpha, beta, aiPlayer);
+	var bestNeg = negamax(BB, last_move, 4, player, alpha, beta);
 	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
 
@@ -230,7 +230,7 @@ test('minimax: choose to win when can', () => {
 
 
 
-test('minimax: choose to win when can within ONLY 1 SB FREE', () => {
+test('negamax: choose to win when can within ONLY 1 SB FREE', () => {
 	var BB = array4D(3, null);
 	for (let i = 0; i < 3 ; i++) {
 		for (let j = 0; j < 3 ; j++) {
@@ -260,24 +260,23 @@ test('minimax: choose to win when can within ONLY 1 SB FREE', () => {
 
 	var depth = 2;
 	var player = "O";
-	var aiPlayer = "O";
 	var alpha = -Infinity;
 	var beta = +Infinity;
 
-	// console.log(minimax(BB, last_move, depth, player, alpha, beta, aiPlayer));
-	var bestNeg = minimax(BB, last_move, 1, player, alpha, beta, aiPlayer);
+	// console.log(negamax(BB, last_move, depth, player, alpha, beta));
+	var bestNeg = negamax(BB, last_move, 1, player, alpha, beta);
 	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
 
-	var bestNeg = minimax(BB, last_move, 2, player, alpha, beta, aiPlayer);
+	var bestNeg = negamax(BB, last_move, 2, player, alpha, beta);
 	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
 
-	var bestNeg = minimax(BB, last_move, 3, player, alpha, beta, aiPlayer);
+	var bestNeg = negamax(BB, last_move, 3, player, alpha, beta);
 	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
 
-	var bestNeg = minimax(BB, last_move, 4, player, alpha, beta, aiPlayer);
+	var bestNeg = negamax(BB, last_move, 4, player, alpha, beta);
 	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
 
@@ -286,7 +285,7 @@ test('minimax: choose to win when can within ONLY 1 SB FREE', () => {
 
 
 
-test('minimax: choose to not let other win (MORE ADVANCED)', () => {
+test('negamax: choose to not let other win (MORE ADVANCED)', () => {
 	var BB = array4D(3, null);
 	for (let i = 0; i < 3 ; i++) {
 		for (let j = 0; j < 3 ; j++) {
@@ -370,22 +369,21 @@ test('minimax: choose to not let other win (MORE ADVANCED)', () => {
 	var alpha = -Infinity;
 	var beta = Infinity;
 	var player = "O";
-	var aiPlayer = "O";
 	var last_move = [0,2,2,0];
-	// var bestNeg = minimax(BB, last_move, 1, player, alpha, beta, aiPlayer);
+	// var bestNeg = negamax(BB, last_move, 1, player, alpha, beta);
 	// console.log(bestNeg);
 
 	// Should work from depth 2 on (not necessarily depth 1)
-	var bestNeg = minimax(BB, last_move, 2, player, alpha, beta, aiPlayer);
+	var bestNeg = negamax(BB, last_move, 2, player, alpha, beta);
 	expect(bestNeg.move).toEqual([2, 0, 2, 2]);
 
-	var bestNeg = minimax(BB, last_move, 3, player, alpha, beta, aiPlayer);
+	var bestNeg = negamax(BB, last_move, 3, player, alpha, beta);
 	expect(bestNeg.move).toEqual([2, 0, 2, 2]);
 
-	var bestNeg = minimax(BB, last_move, 4, player, alpha, beta, aiPlayer);
+	var bestNeg = negamax(BB, last_move, 4, player, alpha, beta);
 	expect(bestNeg.move).toEqual([2, 0, 2, 2]);
 
-	var bestNeg = minimax(BB, last_move, 5, player, alpha, beta, aiPlayer);
+	var bestNeg = negamax(BB, last_move, 5, player, alpha, beta);
 	expect(bestNeg.move).toEqual([2, 0, 2, 2]);
 
 })
@@ -452,14 +450,13 @@ test('minimax: choose to not let other win (MORE ADVANCED)', () => {
 //
 //     var depth = 4;
 //     var player = "O";
-//     var aiPlayer = "O";
 //     var alpha = -Infinity;
 //     var beta = +Infinity;
 //
-//     // console.log(minimax(BB, last_move, 1, player, alpha, beta, aiPlayer));
-//     // console.log(minimax(BB, last_move, 2, player, alpha, beta, aiPlayer));
-//     // console.log(minimax(BB, last_move, 3, player, alpha, beta, aiPlayer));
-//     console.log(minimax(BB, last_move, 4, player, alpha, beta, aiPlayer));
+//     // console.log(negamax(BB, last_move, 1, player, alpha, beta));
+//     // console.log(negamax(BB, last_move, 2, player, alpha, beta));
+//     // console.log(negamax(BB, last_move, 3, player, alpha, beta));
+//     console.log(negamax(BB, last_move, 4, player, alpha, beta));
 //
 //     console.log(evaluate(BB, "O", "X", 1));
 //
@@ -490,7 +487,7 @@ test('minimax: choose to not let other win (MORE ADVANCED)', () => {
 //
 //
 //
-	// // var bestNeg = minimax(BB, last_move, 1, player, alpha, beta, aiPlayer);
+	// // var bestNeg = negamax(BB, last_move, 1, player, alpha, beta);
 //     // expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 //     // expect(bestNeg.score).toBe(10000);
 //
@@ -584,11 +581,10 @@ test('real games to win in one move', () => {
 
 	var depth = 4;
 	var player = "O";
-	var aiPlayer = "O";
 	var alpha = -Infinity;
 	var beta = +Infinity;
 
-	var bestNeg = minimax(BB, last_move, 1, player, alpha, beta, aiPlayer);
+	var bestNeg = negamax(BB, last_move, 1, player, alpha, beta);
 	expect(bestNeg.move).toEqual( [ 2, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
 
@@ -654,12 +650,11 @@ test('real games to win in one move', () => {
 
 	var depth = 8;
 	var player = "O";
-	var aiPlayer = "O";
 	var alpha = -Infinity;
 	var beta = +Infinity;
 
 
-	var bestNeg = minimax(BB, last_move, 1, player, alpha, beta, aiPlayer);
+	var bestNeg = negamax(BB, last_move, 1, player, alpha, beta);
 	expect(bestNeg.move).toEqual([ 1, 2, 2, 2 ]);
 	expect(bestNeg.score).toBe(10000);
 

@@ -234,66 +234,48 @@ function shuffleArray(array) {
 }
 
 
-function minimax(board, lastMove, depth, player, alpha, beta, aiPlayer) {
+function negamax(board, lastMove, depth, player, alpha, beta) {
 	var unshuffledValidMoves = getValidMoves(board, lastMove);
 	// var validMoves = shuffleArray(unshuffledValidMoves);
 	var validMoves = unshuffledValidMoves;
-	
-	// console.log(player, moves, moves.length, depth);
-	var score, bestMove;
+	var bestScore, bestMove, newScore;
 
 	if (validMoves.length === 0 || depth === 0) {
-		var nodeScore = evaluate(board, aiPlayer, aiPlayer === "X" ? "O" : "X", 1);
-		// console.log(nodeScore);
+		var nodeScore = evaluate(board, player, player === "X" ? "O" : "X", 1);
 		return {
 			score: nodeScore, 
 			move: null
 		};
 	}
-
-	var maximizingPlayer;
-	if (aiPlayer === player) {
-		maximizingPlayer = true;
-	} else {
-		maximizingPlayer = false;
-	}
-
+	
+	bestScore = -Infinity;
 	for (var i = 0; i < validMoves.length; i++) {
 		var newMove = validMoves[i];
-
 		let newBoard = JSON.parse(JSON.stringify(board));
 		newBoard[newMove[0]][newMove[1]][newMove[2]][newMove[3]] = player;
-		// console.log(player, "chooses move", newMove);
+		newScore = -negamax(newBoard, newMove, depth - 1, player === "X" ? "O" : "X", -beta, -alpha).score;
 
-		score = minimax(newBoard, newMove, depth - 1, player === "X" ? "O" : "X", alpha, beta, aiPlayer).score;
-		// console.log("At depth", depth, "Move", newMove, "tested obtained score", score, "vs alpha", alpha, "beta ", beta, player);
-		if (maximizingPlayer) {
-			if (score > alpha) {
-				alpha = score;
-				bestMove = newMove;
-				// console.log("=> New alpha", alpha, "New Best Move", bestMove);
-			}
+		if (newScore > bestScore) {
+			bestScore = newScore;
+			bestMove = newMove;
 		}
-		else { 
-			if (score < beta) {
-				beta = score;
-				bestMove = newMove;
-				// console.log("=> New beta", beta, "New Best Move", bestMove);
-			}
+		if (bestScore > alpha) {
+			alpha = bestScore;
 		}
-		// UNDO MOVE
+		
 		if (alpha >= beta) {
 			break;
 		}
 
 	}
 	return {
-		score: maximizingPlayer ? alpha : beta,
+		score: bestScore,
 		move: bestMove
 	};
 
 }
 
 
-module.exports = {getCardinalPosition, getWinner, array2D, array3D, array4D, getValidMoves, evaluate, nbInAlignment, minimax};
+
+module.exports = {getCardinalPosition, getWinner, array2D, array3D, array4D, getValidMoves, evaluate, nbInAlignment, negamax};
 

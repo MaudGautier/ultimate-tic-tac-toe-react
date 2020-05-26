@@ -1,7 +1,7 @@
 // Game class
 import React from 'react';
 import BigBoard from './BigBoard';
-import {getCardinalPosition, getWinner, array2D, array4D, minimax} from './functions';
+import {getCardinalPosition, getWinner, array2D, array4D, negamax} from './functions';
 
 
 class Game extends React.Component {
@@ -240,7 +240,7 @@ class Game extends React.Component {
 
 	async aiMove(board, lastMove, depth, player) {
 		await new Promise(r => setTimeout(r, 500));
-		var move = minimax(board, lastMove, depth, player, -Infinity, Infinity, this.state.botPlayer).move;
+		var move = negamax(board, lastMove, depth, player, -Infinity, Infinity).move;
 
 		// Make Move
 		this.handleClick(move[0], move[1], move[2], move[3]);
