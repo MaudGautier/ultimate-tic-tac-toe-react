@@ -17,7 +17,7 @@ class Game extends React.Component {
 			history: [{
 				bigBoard: null, // 4D array of cell values
 				boardsWinners: null, // 2D array of winners of smallBoards
-				move: [null, null, null, null],
+				move: [null, null, null, null], // Coordinates of last move
 				enabledBoards: null, // 2D array of enabled smallBoards
 			}],
 		};
@@ -31,7 +31,7 @@ class Game extends React.Component {
 		var emptyEnabledBoards = array2D(3, "enabled");
 		var emptyBoard = array4D(3, null);
 
-		// Modify state
+		// Modify state with empty boards and info
 		this.setState({
 			history: [{
 				bigBoard: emptyBoard,
@@ -260,6 +260,7 @@ class Game extends React.Component {
 		);
 	}
 }
+
 
 export default Game;
 

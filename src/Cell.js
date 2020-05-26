@@ -1,6 +1,7 @@
 // Cell class
 import React from 'react';
 
+
 class Cell extends React.Component {
 	constructor(props) {
 		super(props);
@@ -25,6 +26,7 @@ class Cell extends React.Component {
 		); 
 	}
 }
+
 
 export default Cell;
 

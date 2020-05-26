@@ -3,13 +3,14 @@ import React from 'react';
 import {getCardinalPosition} from './functions';
 import SmallBoard from './SmallBoard';
 
+
 class BigBoard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			smallboards: props.smallboards, // Contains an array of 3X3 smallboards
-			boardsWinners: props.boardsWinners,
-			enabledBoards: props.enabledBoards,
+			smallboards: props.smallboards, // Array of 3X3 smallboards
+			boardsWinners: props.boardsWinners, // Array of 3x3 winner names for all SBs
+			enabledBoards: props.enabledBoards, // Array of 3x3 SB (with "enabled" or "disabled" prop)
 		};
 	}
 
@@ -46,6 +47,7 @@ class BigBoard extends React.Component {
 		return (<div> {this.displayBigBoard()} </div>);
 	}
 }
+
 
 export default BigBoard;
 

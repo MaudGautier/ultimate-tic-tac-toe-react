@@ -3,6 +3,7 @@ import React from 'react';
 import {getCardinalPosition} from './functions';
 import Cell from './Cell';
 
+
 class SmallBoard extends React.Component {
 	constructor(props) {
 		super(props);
@@ -17,9 +18,12 @@ class SmallBoard extends React.Component {
 	}
 
 	displaySmallBoard = (boardCardPos) => {
+		// Display a cell of SmallBoard size with X or O when SB won
 		if (this.props.winner === "X" || this.props.winner === "O") {
 			return <button className="cell sizeBoard"> {this.props.winner}</button>;
 		}
+
+		// Otherwise: display 3x3 cells
 		let smallBoard = []
 		// Create rows
 		for (let i = 0; i < 3; i++) {
@@ -43,12 +47,11 @@ class SmallBoard extends React.Component {
 		return smallBoard;
 	}
 
-
 	render() {
 		return (<div> { this.displaySmallBoard(this.state.cardinalPosition) } </div>);
 	}
-
 }
+
 
 export default SmallBoard;
 
