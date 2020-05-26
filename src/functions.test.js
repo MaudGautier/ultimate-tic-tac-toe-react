@@ -251,10 +251,10 @@ test('negamax: choose to win when can within ONLY 1 SB FREE', () => {
 	BB[1][2][1][2] = "O";
 
 	// for (let i = 0; i < 3; i++) {
-		// for (let j = 0; j < 3 ; j++) {
-		//     console.log(i, j, BB[i][j]);
-		// }
-	// }
+	//     for (let j = 0; j < 3 ; j++) {
+	//         console.log(i, j, BB[i][j]);
+	//     }
+	/* } */
 
 	var last_move = [0,0,0,1];
 
@@ -272,12 +272,17 @@ test('negamax: choose to win when can within ONLY 1 SB FREE', () => {
 	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
 	expect(bestNeg.score).toBe(10000);
 
+	// when shuffling, can be either 1, 2, 1, 1 (win in 1 move) or 1, 2, 2, 0 (win in 2 moves)
+	// but NOT: 1, 2, 2, 2 or 1, 2, 0, 2
 	var bestNeg = negamax(BB, last_move, 3, player, alpha, beta);
-	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
+	expect(bestNeg.move).not.toEqual([1, 2, 2, 2 ]);
+	expect(bestNeg.move).not.toEqual([1, 2, 0, 2 ]);
 	expect(bestNeg.score).toBe(10000);
 
 	var bestNeg = negamax(BB, last_move, 4, player, alpha, beta);
-	expect(bestNeg.move).toEqual([1, 2, 1, 1 ]);
+	console.log(bestNeg);
+	expect(bestNeg.move).not.toEqual([1, 2, 2, 2 ]);
+	expect(bestNeg.move).not.toEqual([1, 2, 0, 2 ]);
 	expect(bestNeg.score).toBe(10000);
 
 })

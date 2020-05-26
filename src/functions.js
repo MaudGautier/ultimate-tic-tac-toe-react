@@ -236,8 +236,7 @@ function shuffleArray(array) {
 
 function negamax(board, lastMove, depth, player, alpha, beta) {
 	var unshuffledValidMoves = getValidMoves(board, lastMove);
-	// var validMoves = shuffleArray(unshuffledValidMoves);
-	var validMoves = unshuffledValidMoves;
+	var validMoves = shuffleArray(unshuffledValidMoves);
 	var bestScore, bestMove, newScore;
 
 	if (validMoves.length === 0 || depth === 0) {
