@@ -197,7 +197,9 @@ function evaluate(board, player, opponent, fixedPower = 1) {
 		// Augment score for alignments within SB => return evaluate(wonSB, player, opponent, -1)
 		for (let i = 0; i < 3; i++) {
 			for (let j = 0; j < 3; j++) {
-				if (!wonSB[i][j]) { score += evaluate(wonSB, player, opponent, -1) ;}
+				if (!wonSB[i][j]) { 
+					score += evaluate(board[i][j], player, opponent, -1) ;
+				}
 			}
 		}
 	} 
