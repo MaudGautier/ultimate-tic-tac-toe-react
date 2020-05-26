@@ -230,7 +230,6 @@ class Game extends React.Component {
 			const lastMove = current.move;
 			const depth = 4;
 			const player = this.state.playerTurn;
-			const opponent = player === "X" ? "O" : "X";
 
 			if (!this.state.gameWinner) {
 				this.aiMove(board, lastMove, depth, player);

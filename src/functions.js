@@ -84,64 +84,50 @@ function array2D(size, fillin) {
 
 
 function array3D(size, fillin) {
-	return Array.from(Array(size), () => new module.exports.array2D(size, fillin));
+	return Array.from(Array(size), () => new array2D(size, fillin));
 }
 
 
 function array4D(size, fillin) {
-	return Array.from(Array(size), () => new module.exports.array3D(size, fillin));
+	return Array.from(Array(size), () => new array3D(size, fillin));
 }
 
 
-
-/* function makeMove(board, move) { */
-	// if (move)
-	// board[move[0]]
-/* } */
-
-
-function getValidMoves(board, last_move) {
-	// Throw exception if last_move out of boundaries
-	for (let i = 0 ; i < 4 ; i++) {
-		if (last_move) {
-			if (last_move[i] < 0 || last_move[i] > 2) {
-				return () => {throw new RangeError("Out of boundaries")};
-			}
-		}
-	}
-
-	// If bigBoard
-	var smallBoard;
+function getValidMoves(board, lastMove) {
 	var validMoves = [];
+	
+	// If bigBoard
 	if (Array.isArray(board[0][0])) {
+		var smallBoard;
 
 		// If bigBoard won => return no Valid Move
-		if (module.exports.getWinner(board)) { return []; }
+		if (getWinner(board)) { return []; }
 
 		// if smallBoard not won => add all valid cells from this smallBoard only
-		smallBoard = board[last_move[2]][last_move[3]];
-		if (!module.exports.getWinner(smallBoard)) {
-			validMoves = module.exports.getValidMoves(smallBoard, [last_move[2], last_move[3], null, null]);
+		smallBoard = board[lastMove[2]][lastMove[3]];
+		if (!getWinner(smallBoard)) {
+			validMoves = getValidMoves(smallBoard, [lastMove[2], lastMove[3], null, null]);
 			return validMoves;
 		}
+
 		// if smallBoard already won => add all valid moves from all smallboards not won
 		for (let i = 0; i < 3 ; i++) {
 			for (let j = 0; j < 3; j++) {
-				let newsmallBoard = board[i][j];
-				if (!module.exports.getWinner(newsmallBoard)) {
-					var validMovesSmallBoard = module.exports.getValidMoves(newsmallBoard, [i, j, null, null]);
+				let newSmallBoard = board[i][j];
+				if (!getWinner(newSmallBoard)) {
+					var validMovesSmallBoard = getValidMoves(newSmallBoard, [i, j, null, null]);
 					validMovesSmallBoard.forEach(validMove => validMoves.push(validMove));
 				}
 			}
 		}
-		// console.log(validMoves); // for tests
 		return validMoves;
 	}
+
 	// If smallBoard => add all empty cells
 	for (let i = 0; i < 3 ; i++) {
 		for (let j = 0; j < 3; j++) {
 			if (!board[i][j]) {
-				validMoves.push([last_move[0], last_move[1], i, j]);
+				validMoves.push([lastMove[0], lastMove[1], i, j]);
 			}
 		}
 	}
@@ -180,16 +166,16 @@ function evaluate(board, player, opponent, fixedPower = 1) {
 	if (Array.isArray(board[0][0])) {
 		
 		// Detect smallBoards won
-		var wonSB = module.exports.array2D(3, null);
+		var wonSB = array2D(3, null);
 		for (let i = 0; i < 3; i++) {
 			for (let j = 0; j < 3; j++) {
-				wonSB[i][j] = module.exports.getWinner(board[i][j]);
+				wonSB[i][j] = getWinner(board[i][j]);
 			}
 		}
 		
 		// Return score if bigBoard won
-		if (module.exports.getWinner(wonSB) === player) { return Math.pow(10, fixedPower + 3); }
-		else if (module.exports.getWinner(wonSB) === opponent) { return -Math.pow(10, fixedPower + 3); }
+		if (getWinner(wonSB) === player) { return Math.pow(10, fixedPower + 3); }
+		else if (getWinner(wonSB) === opponent) { return -Math.pow(10, fixedPower + 3); }
 
 		// Augment score for alignments of SB => return evaluate(wonSB, player, opponent, 1)
 		score += evaluate(wonSB, player, opponent, 1);
@@ -204,26 +190,21 @@ function evaluate(board, player, opponent, fixedPower = 1) {
 		}
 	} 
 
-	// If smallBoard (or wonSB i.e. wonSmallBoards)
-	// Augment score for alignments
+	// If smallBoard (or wonSB i.e. wonSmallBoards) => augment score for alignments
 	var nbAligned;
 	// Rows
 	for (let i = 0; i < 3 ; i++) {
 		nbAligned = nbInAlignment(board[i][0], board[i][1], board[i][2], player);
 		score += getScore(nbAligned, fixedPower);
-		// console.log(i, player, nbAligned, getScore(nbAligned, fixedPower), score);
 		nbAligned = nbInAlignment(board[i][0], board[i][1], board[i][2], opponent);
 		score -= getScore(nbAligned, fixedPower);
-		// console.log(i, opponent, nbAligned, -getScore(nbAligned, fixedPower), score);
 	}
 	// Columns
 	for (let j = 0; j < 3; j++) {
 		nbAligned = nbInAlignment(board[0][j], board[1][j], board[2][j], player);
 		score += getScore(nbAligned, fixedPower);
-		// console.log(j, player, nbAligned, score);
 		nbAligned = nbInAlignment(board[0][j], board[1][j], board[2][j], opponent);
 		score -= getScore(nbAligned, fixedPower);
-		// console.log(j, opponent, nbAligned, score);
 	}
 	// Diag 1
 	nbAligned = nbInAlignment(board[0][0], board[1][1], board[2][2], player);
@@ -260,7 +241,6 @@ function minimax(board, lastMove, depth, player, alpha, beta, aiPlayer) {
 	
 	// console.log(player, moves, moves.length, depth);
 	var score, bestMove;
-	var opponent = player === "X" ? "O" : "X";
 
 	if (validMoves.length === 0 || depth === 0) {
 		var nodeScore = evaluate(board, aiPlayer, aiPlayer === "X" ? "O" : "X", 1);
@@ -313,8 +293,6 @@ function minimax(board, lastMove, depth, player, alpha, beta, aiPlayer) {
 	};
 
 }
-
-
 
 
 module.exports = {getCardinalPosition, getWinner, array2D, array3D, array4D, getValidMoves, evaluate, nbInAlignment, minimax};

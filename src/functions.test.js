@@ -36,18 +36,6 @@ test('getValidMoves: empty smallBoard', () => {
 	expect(getValidMoves(smallBoard, [rowSB, colSB, 2, 2])).toEqual(expected_output);
 });
 
-test('getValidMoves: test out of boundaries', () => {
-	let smallBoard = array2D(3, null);
-	expect(getValidMoves(smallBoard, [-1, 1, 1, 1])).toThrow(RangeError);
-	expect(getValidMoves(smallBoard, [1, -1, 1, 1])).toThrow(RangeError);
-	expect(getValidMoves(smallBoard, [1, 1, -1, -1])).toThrow(RangeError);
-	expect(getValidMoves(smallBoard, [1, 1, -1, -1])).toThrow(RangeError);
-	expect(getValidMoves(smallBoard, [3, 1, 1, 1])).toThrow(RangeError);
-	expect(getValidMoves(smallBoard, [1, 3, 1, 1])).toThrow(RangeError);
-	expect(getValidMoves(smallBoard, [1, 1, 3, 1])).toThrow(RangeError);
-	expect(getValidMoves(smallBoard, [1, 1, 1, 3])).toThrow(RangeError);
-})
-
 test('getValidMoves: bigBoard with smallBoard not won', () => {
 	let bigBoard = array4D(3, null);
 	let rowBigB = 2;
