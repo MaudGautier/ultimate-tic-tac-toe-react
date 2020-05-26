@@ -239,8 +239,23 @@ function evaluate(board, player, opponent, fixedPower = 1) {
 }
 
 
+/* Randomize array in-place using Durstenfeld shuffle algorithm */
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+	return array;
+}
+
+
 function minimax(board, lastMove, depth, player, alpha, beta, aiPlayer) {
-	var validMoves = getValidMoves(board, lastMove);
+	var unshuffledValidMoves = getValidMoves(board, lastMove);
+	// var validMoves = shuffleArray(unshuffledValidMoves);
+	var validMoves = unshuffledValidMoves;
+	
 	// console.log(player, moves, moves.length, depth);
 	var score, bestMove;
 	var opponent = player === "X" ? "O" : "X";
