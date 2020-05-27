@@ -239,7 +239,8 @@ class Game extends React.Component {
 	}
 
 	async aiMove(board, lastMove, depth, player) {
-		await new Promise(r => setTimeout(r, 500));
+		var timeout = depth < 6 ? 800 : 400;
+		await new Promise(r => setTimeout(r, timeout));
 		var move = negamax(board, lastMove, depth, player, -Infinity, Infinity).move;
 
 		// Make Move
