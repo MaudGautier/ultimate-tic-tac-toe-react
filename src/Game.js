@@ -22,6 +22,7 @@ class Game extends React.Component {
 			}],
 		};
 		this.handleOpponentChange = this.handleOpponentChange.bind(this);
+		this.handleBotBegins = this.handleBotBegins.bind(this);
 	}
 
 	
@@ -81,16 +82,37 @@ class Game extends React.Component {
 	handleOpponentChange(event) {
 		this.setState({opponent: event.target.value});
 	}
+
+
+	handleBotBegins(event) {
+		this.setState({botPlayer: event.target.value});
+	}
 	
+		
+	botSettingsSelection() {
+		return(
+			<label>
+			Computer begins? &nbsp;
+			<select defaultValue={"O"} onChange={this.handleBotBegins}>
+			<option value="X">yes</option>
+			<option value="O">no</option>
+			</select>
+			</label>
+		);
+	}
+
+
 
 	opponentSelection() {
 		return(<label>
 			Play against &nbsp;
-			<select onChange={this.handleOpponentChange}>
+			<select defaultValue={"bot"} onChange={this.handleOpponentChange}>
 			<option value="bot">the computer</option>
 			<option value="human">a friend</option>
 			</select>
-		</label>);
+			</label>
+
+		);
 	}
 
 
@@ -98,8 +120,11 @@ class Game extends React.Component {
 		return (
 			<form>
 			
-			{this.opponentSelection()} 
-			<br />
+			<div>{this.opponentSelection()}</div>
+			{
+				this.state.opponent === "bot" &&
+				<div>{this.botSettingsSelection()} </div>
+			}
 			
 			<button onClick={() => this.startGame()} type="button">
 			Start a new game
@@ -256,7 +281,6 @@ class Game extends React.Component {
 				this.aiMove(board, lastMove, depth, player);
 			}			
 		}
-		// ATTENTION: voir comment faire si l'ordinateur joue en premier!!!!
 	}
 
 	async aiMove(board, lastMove, depth, player) {
