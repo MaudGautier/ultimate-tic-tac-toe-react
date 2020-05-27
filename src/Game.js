@@ -12,8 +12,8 @@ class Game extends React.Component {
 			players: ["X", "O"],
 			gameWinner: null,
 			stepNumber: 0,
-			opponent: "bot",
-			botPlayer: "O",
+			opponent: "bot", // Default: play against bot
+			botPlayer: "O", // Default: bot plays second
 			history: [{
 				bigBoard: null, // 4D array of cell values
 				boardsWinners: null, // 2D array of winners of smallBoards
@@ -28,7 +28,12 @@ class Game extends React.Component {
 	startGame() {
 		// Initialise boards
 		var emptyWinners = array2D(3, null);
-		var emptyEnabledBoards = array2D(3, "enabled");
+		var emptyEnabledBoards;
+		if (this.state.opponent === "bot" && this.state.botPlayer === "X") { 
+			emptyEnabledBoards = array2D(3, "disabled"); 
+		} else { 
+			emptyEnabledBoards = array2D(3, "enabled"); 
+		}
 		var emptyBoard = array4D(3, null);
 
 		// Modify state with empty boards and info
