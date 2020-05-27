@@ -251,6 +251,9 @@ class Game extends React.Component {
 
 	async componentDidUpdate() {
 		
+		// Return if board not already available
+		if (!this.state.history[0].bigBoard) { return; }
+
 		// If bot has to play, do it after board update when it is the bot's turn
 		if (this.state.opponent === "bot" && this.state.playerTurn === this.state.botPlayer) {
 			
