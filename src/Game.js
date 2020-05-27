@@ -219,18 +219,34 @@ class Game extends React.Component {
 
 	}
 
-	componentDidUpdate() {
-		if (this.state.history.length === 1) {return;}
-		if (this.state.opponent === "bot" && this.state.playerTurn === "O") {
-
+	async componentDidUpdate() {
+		
+		// If bot has to play, do it after board update when it is the bot's turn
+		if (this.state.opponent === "bot" && this.state.playerTurn === this.state.botPlayer) {
+			
 			// Deep copy of history and boards
 			const history = this.state.history.slice(0, this.state.stepNumber + 1);
 			const current = history[history.length - 1];
 			const board = JSON.parse(JSON.stringify(current.bigBoard)); 
-			const lastMove = current.move;
-			const depth = 4;
+			const depth = 2;
 			const player = this.state.playerTurn;
+			var lastMove;
 
+
+			// First move when bot plays first has no previous move => select one at random
+			if (this.state.history.length === 1) {
+				await new Promise(r => setTimeout(r, 500));
+				lastMove = [
+					Math.floor(Math.random()*3), // SB row
+					Math.floor(Math.random()*3), // SB col
+					Math.floor(Math.random()*3), // cell row
+					Math.floor(Math.random()*3)  // cell col
+				];
+			} else {
+				lastMove = current.move;
+			}
+
+			// Then, play
 			if (!this.state.gameWinner) {
 				this.aiMove(board, lastMove, depth, player);
 			}			
