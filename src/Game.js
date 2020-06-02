@@ -12,6 +12,7 @@ class Game extends React.Component {
 			players: ["X", "O"],
 			gameWinner: null,
 			stepNumber: 0,
+			level: 2,
 			opponent: "bot", // Default: play against bot
 			botPlayer: "O", // Default: bot plays second
 			history: [{
@@ -23,6 +24,7 @@ class Game extends React.Component {
 		};
 		this.handleOpponentChange = this.handleOpponentChange.bind(this);
 		this.handleBotBegins = this.handleBotBegins.bind(this);
+		this.handleLevelSelection = this.handleLevelSelection.bind(this);
 	}
 
 	
@@ -84,6 +86,11 @@ class Game extends React.Component {
 	}
 
 
+	handleLevelSelection(event) {
+		this.setState({level: parseInt(event.target.value)});
+	}
+
+
 	handleBotBegins(event) {
 		this.setState({botPlayer: event.target.value});
 	}
@@ -91,6 +98,8 @@ class Game extends React.Component {
 		
 	botSettingsSelection() {
 		return(
+			<div>
+
 			<label>
 			Computer begins? &nbsp;
 			<select defaultValue={"O"} onChange={this.handleBotBegins}>
@@ -98,6 +107,22 @@ class Game extends React.Component {
 			<option value="O">no</option>
 			</select>
 			</label>
+
+			<label>
+			<br/> Level: &nbsp;
+			<select defaultValue={"2"} onChange={this.handleLevelSelection}>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			</select>
+			</label>
+
+			</div>
 		);
 	}
 
@@ -261,7 +286,6 @@ class Game extends React.Component {
 			const history = this.state.history.slice(0, this.state.stepNumber + 1);
 			const current = history[history.length - 1];
 			const board = JSON.parse(JSON.stringify(current.bigBoard)); 
-			const depth = 2;
 			const player = this.state.playerTurn;
 			var lastMove;
 
@@ -281,15 +305,15 @@ class Game extends React.Component {
 
 			// Then, play
 			if (!this.state.gameWinner) {
-				this.aiMove(board, lastMove, depth, player);
+				this.aiMove(board, lastMove, this.state.level, player);
 			}			
 		}
 	}
 
-	async aiMove(board, lastMove, depth, player) {
-		var timeout = depth < 6 ? 800 : 400;
+	async aiMove(board, lastMove, level, player) {
+		var timeout = level < 6 ? 800 : 400;
 		await new Promise(r => setTimeout(r, timeout));
-		var move = negamax(board, lastMove, depth, player, -Infinity, Infinity).move;
+		var move = negamax(board, lastMove, level, player, -Infinity, Infinity).move;
 
 		// Make Move
 		this.handleClick(move[0], move[1], move[2], move[3]);
