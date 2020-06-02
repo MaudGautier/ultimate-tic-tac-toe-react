@@ -204,7 +204,7 @@ class Game extends React.Component {
 	}
 
 
-	handleClick(boardRow, boardCol, cellRow, cellCol) {
+	handleClick(boardRow, boardCol, cellRow, cellCol, humanClicked = true) {
 		// Deep copy of history and boards
 		const history = this.state.history.slice(0, this.state.stepNumber + 1);
 		const current = history[history.length - 1];
@@ -216,9 +216,9 @@ class Game extends React.Component {
 		// Return early if:
 		if (this.state.gameWinner  // game already won
 			|| current.boardsWinners[boardRow][boardCol] // smallboard already won
-			|| smallBoard[cellRow][cellCol]) { // cell already full
-			return;
-		}
+			|| smallBoard[cellRow][cellCol] // cell already full
+			|| (humanClicked && this.state.playerTurn === this.state.botPlayer)) // human clicked while it is bot's turn
+		{ return; }
 		// Or if smallBoard is not valid (based on previous move)
 		// unless if the expected smallBoard is already won
 		if (history.length > 1) {
@@ -316,7 +316,7 @@ class Game extends React.Component {
 		var move = negamax(board, lastMove, level, player, -Infinity, Infinity).move;
 
 		// Make Move
-		this.handleClick(move[0], move[1], move[2], move[3]);
+		this.handleClick(move[0], move[1], move[2], move[3], false);
 
 	}
 
