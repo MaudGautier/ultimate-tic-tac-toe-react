@@ -46,7 +46,7 @@ Additional features:
 - [ ] AI: Take into account the value of the third small board in the alignment when two are already won (to improve AI)
 - [ ] AI: Change to a Monte-Carlo Tree Search algorithm rather than a minimax algorithm (will outperform ?)
 - [ ] Bug fix: Prevent computer from playing when a setting is changed in the middle of a game. E.g. use a "change settings" button to disable board when changing the settings in the middle of a game ?
-
+- [ ] Bug fix: Modify evaluation function so that the new test 'evaluate: classifies correctly' has the boards scores in the correct order (BB\_4 > BB\_5 and BB\_6 > BB\_7)
 
 Development:
 

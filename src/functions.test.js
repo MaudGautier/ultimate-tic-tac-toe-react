@@ -535,6 +535,85 @@ test('eval score of similar boards', () => {
 
 
 
+// New for evaluate (modification)
+test('evaluate: classifies correctly', () => {
+	var BB = array4D(3, null);
+	for (let i = 0; i < 3 ; i++) {
+		for (let j = 0; j < 3 ; j++) {
+			BB[0][0][i][j] = "X";
+			BB[0][2][i][j] = "X";
+		}
+	}
+	var BB_8 = JSON.parse(JSON.stringify(BB));
+
+	var BB_7 = JSON.parse(JSON.stringify(BB));
+	BB_7[2][1][0][0] = "X";
+	BB_7[2][1][1][1] = "X";
+
+	var BB_6 = JSON.parse(JSON.stringify(BB));
+	BB_6[0][1][0][0] = "X";
+
+	var BB_5 = JSON.parse(JSON.stringify(BB));
+	BB_5[2][1][0][0] = "X";
+	BB_5[2][1][1][1] = "X";
+	BB_5[2][1][2][2] = "X";
+
+	var BB_4 = JSON.parse(JSON.stringify(BB));
+	BB_4[0][1][0][0] = "X";
+	BB_4[0][1][1][1] = "X";
+
+	var BB_3 = JSON.parse(JSON.stringify(BB));
+	BB_3[2][1][0][0] = "X";
+	BB_3[2][1][1][1] = "X";
+	BB_3[2][1][2][2] = "X";
+	BB_3[1][1][0][0] = "X";
+	BB_3[1][1][1][1] = "X";
+	BB_3[1][1][2][2] = "X";
+
+	var BB_2 = JSON.parse(JSON.stringify(BB));
+	BB_2[2][1][0][0] = "X";
+	BB_2[2][1][1][1] = "X";
+	BB_2[2][1][2][2] = "X";
+	BB_2[1][1][0][0] = "X";
+	BB_2[1][1][1][1] = "X";
+	BB_2[1][1][2][2] = "X";
+	BB_2[0][1][0][0] = "X";
+
+	var BB_1 = JSON.parse(JSON.stringify(BB));
+	BB_1[2][1][0][0] = "X";
+	BB_1[2][1][1][1] = "X";
+	BB_1[2][1][2][2] = "X";
+	BB_1[1][1][0][0] = "X";
+	BB_1[1][1][1][1] = "X";
+	BB_1[1][1][2][2] = "X";
+	BB_1[0][1][0][0] = "X";
+	BB_1[0][1][1][1] = "X";
+
+
+	console.log(evaluate(BB_1, "X", "O"));
+	console.log(evaluate(BB_2, "X", "O"));
+	console.log(evaluate(BB_3, "X", "O"));
+	console.log(evaluate(BB_4, "X", "O"));
+	console.log(evaluate(BB_5, "X", "O"));
+	console.log(evaluate(BB_6, "X", "O"));
+	console.log(evaluate(BB_7, "X", "O"));
+	console.log(evaluate(BB_8, "X", "O"));
+
+	// A finir quand aurai fait l'amelioration
+	// La correction devrait echanger 7 et 6 et 4 et 5 pour avoir tout le monde dans l'ordre
+	expect(evaluate(BB_1, "X", "O")).toBeGreaterThan(evaluate(BB_2, "X", "O"));
+	expect(evaluate(BB_2, "X", "O")).toBeGreaterThan(evaluate(BB_3, "X", "O"));
+	expect(evaluate(BB_3, "X", "O")).toBeGreaterThan(evaluate(BB_4, "X", "O"));
+	// expect(evaluate(BB_4, "X", "O")).toBeGreaterThan(evaluate(BB_5, "X", "O"));
+	expect(evaluate(BB_5, "X", "O")).toBeGreaterThan(evaluate(BB_6, "X", "O"));
+	// expect(evaluate(BB_6, "X", "O")).toBeGreaterThan(evaluate(BB_7, "X", "O"));
+	expect(evaluate(BB_7, "X", "O")).toBeGreaterThan(evaluate(BB_8, "X", "O"));
+
+
+
+})
+
+
 // Some real games
 test('real games to win in one move', () => {
 
