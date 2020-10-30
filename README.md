@@ -1,68 +1,57 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Ultimate tic-tac-toe
 
-## Available Scripts
+This ultimate tic-tac-toe game was implemented with a [Create React App](https://github.com/facebook/create-react-app).
 
-In the project directory, you can run:
 
-### `npm start`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Install and play
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+1. Clone the repo: `git clone https://github.com/MaudGautier/ultimate-tic-tac-toe-react.git`
+2. Build the app: `yarn build`
+3. (Optional) Install serve if not already installed: `yarn global add serve`
+4. Run the app: `serve -s build` and play !
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## Ultimate tic-tac-toe rules
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The ultimate tic-tac-toe board consists of 3 x 3 small boards.
+To win the game, the player must win three aligned small boards, and each small board can be won following the rules of the [standard tic-tac-toe](https://en.wikipedia.org/wiki/Tic-tac-toe), i.e. by placing their mark (X or O) on three aligned cells of a small board.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+In addition, the coordinates of the cell marked by one player at one given move define the coordinates of the small board in which the opponent will have to play at the next move.
+If the selected small board is already won or is a tie, the opponent can play in any available small board.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Check more detailed rules on the dedicated [wikipedia page](https://en.wikipedia.org/wiki/Ultimate_tic-tac-toe).
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Artificial intelligence implementation
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+The artificial intelligence that allows the bot to play was implemented using a [negamax search](https://en.wikipedia.org/wiki/Negamax) which is a variant form of the [minimax](https://en.wikipedia.org/wiki/Minimax) decision rule.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## TODO
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Additional features:
 
-### Code Splitting
+- [x] Remove determinism: choose randomly among all best moves 
+- [ ] Count the total number of points: 16 if game won, number of small boards won otherwise
+- [ ] Save scores across games
+- [ ] When getting into history (jumpTo), un-blur the board
+- [ ] Possibility to have colored Xs and Os
+- [ ] Nicer settings panel (CSS)
+- [ ] Allow some time before won small board is replaced by a big O or big X (to see why won) OR possibility to see full won small board when clicking onto it
+- [ ] Possibility to replay using one's pseudo
+- [ ] AI: Take into account the value of the third small board in the alignment when two are already won (to improve AI)
+- [ ] AI: Change to a Monte-Carlo Tree Search algorithm rather than a minimax algorithm (will outperform ?)
+- [ ] Bug fix: Prevent computer from playing when a setting is changed in the middle of a game. E.g. use a "change settings" button to disable board when changing the settings in the middle of a game ?
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
 
-### Analyzing the Bundle Size
+Development:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+- [ ] Remove constructors in Cell, SmallBoard, BigBoard
+- [ ] Transform Game.handleClick() into an external function
 
-### Making a Progressive Web App
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
 
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
