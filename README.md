@@ -7,9 +7,10 @@ This ultimate tic-tac-toe game was implemented with a [Create React App](https:/
 ## Install and play
 
 1. Clone the repo: `git clone https://github.com/MaudGautier/ultimate-tic-tac-toe-react.git`
-2. Build the app: `yarn build`
-3. (Optional) Install serve if not already installed: `yarn global add serve`
-4. Run the app: `serve -s build` and play !
+2. Install dependencies listed in the `package.json` file: `yarn install`
+3. Build the app: `yarn build`
+4. (Optional) Install serve if not already installed: `yarn global add serve`
+5. Run the app: `serve -s build` and play !
 
 
 
